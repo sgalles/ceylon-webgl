@@ -23,7 +23,9 @@ shared void updateTime(dynamic eventSource) {
 }
 
 String date() {
-    dynamic { return \iDate().string; }
+    // \iDate is a workaround because both 'Date()' and 'new Date()' exists in JS
+    // if we write Date() Ceylon tries to instanciate 
+    dynamic { return \iDate(); }
 }
 
 
