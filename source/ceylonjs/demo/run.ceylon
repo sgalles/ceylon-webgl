@@ -23,5 +23,5 @@ shared void updateTime(dynamic eventSource) {
 }
 
 String date() {
-    dynamic { dynamic date = Date; return date().string; }
+    dynamic { return (Date)().string; }
 }
