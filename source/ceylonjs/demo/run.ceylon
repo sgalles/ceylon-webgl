@@ -8,12 +8,10 @@ shared void run() {
 
 "Single page app"
 String singlePage() {
-    dynamic {
-        return "<div>
-                    <h1>Hello CeylonJS</h1>
-                    <div id='date-text'>Today is ``date()``</div>
-                </div>";
-    }
+    return "<div>
+                <h1>Hello CeylonJS</h1>
+                <div id='date-text'>Today is ``date()``</div>
+            </div>";
 }
 
 "This function is a callback for the HTML button's click event"
