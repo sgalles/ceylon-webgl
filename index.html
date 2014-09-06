@@ -4,7 +4,7 @@
     <head>
         <meta http-equiv="Content-type" 
               content="text/html;charset=UTF-8"/>
-        <title>Hello</title>
+        <title>CeylonJS Demo App</title>
         <script type="text/javascript"
                 src="script/require/2.1.14/require.js">
         </script>
@@ -19,19 +19,20 @@
                         '../script/ceylon/language'
                 }
             });
-            //alias our hello module to 'h'
-            require(['foo/bar/1.0.0/foo.bar-1.0.0'], 
-                    function (foo) { f = foo; });
+            //alias our module to 'app'
+            require(['ceylonjs/demo/1.0.0/ceylonjs.demo-1.0.0'], 
+                    function (module) { app = module; app.run(); });
         </script>
+        <link rel="stylesheet" type="text/css" href="style/main.css">
     </head>
     <body>
         <div>
-            <input type="submit" 
-                   value="Say hello" 
-                   onclick="f.hello()"/>
+            <span id="contents">Loading page...</span>
         </div>
         <div>
-            <span id="greeting"/>
+            <input type="submit" id="run-function-button"
+                   value="Run function updateTime()" 
+                   onclick="app.updateTime(this)"/>
         </div>
     </body>
 </html>

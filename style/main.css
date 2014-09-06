@@ -1,0 +1,26 @@
+body {
+  font-family: sans-serif;
+}
+
+h1 {
+  color: blue;
+}
+
+body {
+  max-width: 800px;
+}
+
+#date-text {
+  padding: 10px;
+  background-color: lightblue;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+input {
+  padding: 8px;
+}
+
+#run-function-button {
+  margin-top: 15px;
+}
