@@ -23,5 +23,7 @@ shared void updateTime(dynamic eventSource) {
 }
 
 String date() {
-    dynamic { return (Date)().string; }
+    dynamic { return \iDate().string; }
 }
+
+
