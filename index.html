@@ -5,34 +5,40 @@
         <meta http-equiv="Content-type" 
               content="text/html;charset=UTF-8"/>
         <title>CeylonJS Demo App</title>
+        <style>canvas { width: 100%; height: 100% }</style> 
         <script type="text/javascript"
                 src="script/require/2.1.14/require.js">
         </script>
+        <script src="script/threejs/three.min.js"></script>
         <script type="text/javascript">
             require.config({
                 // location of our project's compiled modules
                 baseUrl: 'modules',
+                
                 // locations of external dependencies here
                 paths: {
                     // path to the Ceylon language module 
-                    'ceylon/language': 
-                        '../script/ceylon/language'
-                }
+                    'ceylon/language': '../script/ceylon/language',
+                     three: '../script/threejs/three.min',
+                     app: 'ceylonjs/demo/1.0.0/ceylonjs.demo-1.0.0'
+                },
+                 shim: {
+                    'three': { exports: 'THREE' },
+                    app: {
+                        deps: ['three']
+                    }
+                 },
             });
             //alias our module to 'app'
-            require(['ceylonjs/demo/1.0.0/ceylonjs.demo-1.0.0'], 
+            
+            require(['app'], 
                     function (module) { app = module; app.run(); });
+                    
+          
         </script>
         <link rel="stylesheet" type="text/css" href="style/main.css">
     </head>
     <body>
-        <div>
-            <span id="contents">Loading page...</span>
-        </div>
-        <div>
-            <input type="submit" id="run-function-button"
-                   value="Run function updateTime()" 
-                   onclick="app.updateTime(this)"/>
-        </div>
+     
     </body>
 </html>
