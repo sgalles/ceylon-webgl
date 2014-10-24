@@ -1,3 +1,10 @@
+//shared void run() {
+//    dynamic {
+//        dynamic x = XMLHttpRequest();
+//        print(x);
+//    }
+//}
+
 "Run CeylonJS Basic Demo - called after the page loads"
 shared void run() {
     dynamic {
@@ -11,6 +18,7 @@ shared void run() {
         window.\iAmbientLight = THREE.\iAmbientLight;
         window.\iDirectionalLight = THREE.\iDirectionalLight;
         window.\iSphereGeometry = THREE.\iSphereGeometry;
+        
         
         dynamic scene = Scene();
         dynamic camera = PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -45,8 +53,8 @@ shared void run() {
         
         void render() { 
             requestAnimationFrame(render); 
-            cube.rotation.x = cube.rotation.x + 0.1;
-            cube.rotation.y = cube.rotation.y + 0.1;
+            cube.rotation.x = cube.rotation.x += 0.1;
+            cube.rotation.y = cube.rotation.y += 0.1;
             renderer.render(scene, camera); 
         } 
         render();
