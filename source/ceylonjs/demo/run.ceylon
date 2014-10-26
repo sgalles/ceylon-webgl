@@ -7,6 +7,7 @@
 
 "Run CeylonJS Basic Demo - called after the page loads"
 shared void run() {
+    Image img = Image(trompon.raw);
     dynamic {
         window.\iScene = THREE.\iScene;
         window.\iPerspectiveCamera = THREE.\iPerspectiveCamera;
@@ -18,6 +19,8 @@ shared void run() {
         window.\iAmbientLight = THREE.\iAmbientLight;
         window.\iDirectionalLight = THREE.\iDirectionalLight;
         window.\iSphereGeometry = THREE.\iSphereGeometry;
+        window.\iVector3 = THREE.\iVector3;
+       
         
         
         dynamic scene = Scene();
@@ -25,22 +28,36 @@ shared void run() {
         dynamic renderer = WebGLRenderer();
         renderer.setSize( window.innerWidth, window.innerHeight );
         document.body.appendChild( renderer.domElement );
-        dynamic geometry = SphereGeometry(0.3, 10, 10);
-        //dynamic geometry = BoxGeometry(1,1,1);
-        object materialProperties{
-            // light
-            shared Integer specular = #a9fcff;
-            // intermediate
-            shared Integer color = #00ff00;
-            // dark
-            shared Integer emissive = #006063;
-            shared Integer shininess = 100;
+       
+        variable Integer j = 0;
+       
+        for(Integer c in img.pixels){
+            if(c != #ffffff){
+                dynamic geometry = SphereGeometry(0.3, 5, 5);
+                object materialProperties{
+                    // light
+                    shared Integer specular = #a9fcff;
+                    // intermediate
+                    shared Integer color = c;
+                    // dark
+                    shared Integer emissive = #006063;
+                    shared Integer shininess = 100;
+                }
+                
+                dynamic material = MeshPhongMaterial(materialProperties) ;   
+                dynamic sphere = Mesh( geometry, material ); 
+                sphere.position.x = (j%img.width)/4;
+                sphere.position.y = (j/img.height)/4;
+                scene.add( sphere );
+            }
+            
+           j+=1;
         }
        
-        dynamic material = MeshPhongMaterial(materialProperties) ;
-        dynamic cube = Mesh( geometry, material ); 
-        scene.add( cube ); 
-        camera.position.z = 5;
+        
+        
+        
+        camera.position.z = 30;
         
         // add subtle ambient lighting
         dynamic ambientLight = AmbientLight(#222222);
@@ -53,8 +70,8 @@ shared void run() {
         
         void render() { 
             requestAnimationFrame(render); 
-            cube.rotation.x = cube.rotation.x += 0.1;
-            cube.rotation.y = cube.rotation.y += 0.1;
+            //sphere.rotation.x += 0.1;
+            //sphere.rotation.y += 0.1;
             renderer.render(scene, camera); 
         } 
         render();
