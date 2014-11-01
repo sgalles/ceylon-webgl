@@ -1,4 +1,4 @@
-import ceylonjs.demo.contract {
+import ceylonjs.webgl.three {
     DynScene,
     dynScene,
     dynPerspectiveCamera,
