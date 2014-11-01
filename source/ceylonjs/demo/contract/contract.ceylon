@@ -32,6 +32,7 @@ shared dynamic DynVector3{
 	shared variable formal Float z;
 	shared formal DynVector3 set(Float|Integer x, Float|Integer y, Float|Integer z);
 	shared formal DynVector3 normalize();
+	shared formal DynVector3 applyEuler(DynEuler euler);
 }
 
 shared dynamic DynCamera satisfies DynObject3D{
@@ -79,6 +80,15 @@ shared DynScene dynScene(){
 		scene = Scene();
 	}
 	return scene;
+}
+
+shared DynEuler dynEuler(Float x,Float y, Float z, String order){
+    DynEuler o;
+    dynamic {
+        window.\iEuler = THREE.\iEuler;
+        o = Euler(x,y,z,order);
+    }
+    return o;
 }
 
 shared DynWebGLRenderer dynWebGLRenderer(){
