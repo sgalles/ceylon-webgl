@@ -1,3 +1,7 @@
+import ceylonjs.webgl.resource {
+    Image,
+    trompon
+}
 import ceylonjs.webgl.three {
     DynScene,
     dynScene,
