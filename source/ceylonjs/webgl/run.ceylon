@@ -62,10 +62,10 @@ shared void run() {
         scene.add(directionalLight);
        
         variable Float rotationY = 0.05;
-       
+       swarm.nextPosition();
         void renderCallback() { 
-           rotationY+=0.1;
-           swarm.nextPosition();  
+           //rotationY+=0.1;
+           //;  
            dynRequestAnimationFrame(renderCallback); 
            DynEuler euler = dynEuler(0.0,rotationY, 0.0, "XYZ");
             for(o in object3ds.coalesced){

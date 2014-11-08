@@ -33,9 +33,9 @@ shared class ImageSwarm(Integer width, [DynObject3D?*] childrenInRectangle) exte
               Float y = pair[1][1];
               DynVector3 v = dynVector3(x, y, 0);
               void command(){
-                  obj.position = v;
-                 // obj.position.y = v.y;
-                 // obj.position.z = v.z;
+                  obj.position.x = v.x;
+                 obj.position.y = v.y;
+                  obj.position.z = v.z;
               }
               return command;         
           }
