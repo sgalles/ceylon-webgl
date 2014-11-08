@@ -20,7 +20,7 @@ shared dynamic DynObject3D{
 	shared formal void add(DynObject3D o);
 	shared formal {DynObject3D*} children;
 	shared formal DynEuler rotation;
-	shared formal DynVector3 position;
+	shared formal variable DynVector3 position;
 }
 
 shared dynamic DynEuler{
@@ -112,6 +112,15 @@ shared DynPerspectiveCamera dynPerspectiveCamera( Float|Integer fov, Float|Integ
 		o = PerspectiveCamera(fov,aspect,near,far);
 	}
 	return o;
+}
+
+shared DynVector3 dynVector3( Float|Integer x, Float|Integer y, Float|Integer z){
+    DynVector3 o;
+    dynamic {
+        window.\iVector3 = THREE.\iVector3;
+        o = Vector3(x,y,z);
+    }
+    return o;
 }
 	
 shared DynBoxGeometry dynBoxGeometry(Float|Integer width,Float|Integer height,Float|Integer depth){

@@ -1,5 +1,7 @@
 import ceylonjs.webgl.three {
-    DynObject3D
+    DynObject3D,
+    dynVector3,
+    DynVector3
 }
 shared class ImageSwarm(Integer width, [DynObject3D?*] childrenInRectangle) extends AsbtractSwarm(childrenInRectangle.coalesced.sequence()){
    //  alias XY => Float[2]; 
@@ -29,9 +31,11 @@ shared class ImageSwarm(Integer width, [DynObject3D?*] childrenInRectangle) exte
               DynObject3D obj = pair[0];
               Float x = pair[1][0];
               Float y = pair[1][1];
+              DynVector3 v = dynVector3(x, y, 0);
               void command(){
-                  obj.position.x = x;
-                  obj.position.y = y;
+                  obj.position = v;
+                 // obj.position.y = v.y;
+                 // obj.position.z = v.z;
               }
               return command;         
           }

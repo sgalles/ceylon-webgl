@@ -64,6 +64,7 @@ shared void run() {
         variable Float rotationY = 0.05;
        
         void renderCallback() { 
+           rotationY+=0.1;
            swarm.nextPosition();  
            dynRequestAnimationFrame(renderCallback); 
            DynEuler euler = dynEuler(0.0,rotationY, 0.0, "XYZ");
