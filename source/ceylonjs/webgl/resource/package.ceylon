@@ -1,1 +1,1 @@
-shared package ceylonjs.webgl.resource;
+package ceylonjs.webgl.resource;

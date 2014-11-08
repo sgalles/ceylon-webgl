@@ -1,3 +1,6 @@
+
+shared alias Color => Integer;
+
 shared dynamic DynWebGLRenderer {
 	shared formal void setSize(Integer width, Integer height);
 	shared formal dynamic domElement;
@@ -55,7 +58,7 @@ shared dynamic DynMeshLambertMaterial satisfies DynMaterial{
 	
 }
 
-shared class DynMeshLambertMaterialParam(shared Integer? color = null){}
+shared class DynMeshLambertMaterialParam(shared Color? color = null){}
 
 shared dynamic DynLight satisfies DynObject3D{
 	

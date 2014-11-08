@@ -2,27 +2,12 @@ import ceylonjs.webgl.resource {
     Image,
     trompon
 }
+import ceylonjs.webgl.swarm {
+    ImageSwarm,
+    Swarm
+}
 import ceylonjs.webgl.three {
-    DynScene,
-    dynScene,
-    dynPerspectiveCamera,
-    DynPerspectiveCamera,
-    DynWebGLRenderer,
-    dynWebGLRenderer,
-    DynBoxGeometry,
-    dynBoxGeometry,
-    DynMeshLambertMaterialParam,
-    dynMeshLambertMaterial,
-    DynMeshLambertMaterial,
-    dynMesh,
-    DynMesh,
-    DynDirectionalLight,
-    dynDirectionalLight,
-    dynAmbientLight,
-    DynAmbientLight,
-    dynRequestAnimationFrame,
-    dynEuler,
-    DynEuler
+    ...
 }
 
 "Run CeylonJS Basic Demo - called after the page loads"
@@ -44,11 +29,26 @@ shared void run() {
             if(color != #ffffff){     
                 DynMeshLambertMaterial material = dynMeshLambertMaterial(DynMeshLambertMaterialParam(color)) ; 
                 DynMesh cube = dynMesh( geometry, material ); 
-                cube.position.x = ((i%img.width) - 30).float;
-                cube.position.y = (-(i/(img.width))+30).float;
+                //cube.position.x = ((i%img.width) - 30).float;
+                //cube.position.y = (-(i/(img.width))+30).float;
                 scene.add( cube );
             }
         }
+        [DynObject3D?*] object3ds = img.pixels.collect((Color color){
+            if(color != #ffffff){     
+                DynMeshLambertMaterial material = dynMeshLambertMaterial(DynMeshLambertMaterialParam(color)) ; 
+                return dynMesh( geometry, material ); 
+                //cube.position.x = ((i%img.width) - 30).float;
+                //cube.position.y = (-(i/(img.width))+30).float;
+                //scene.add( cube );
+            }else{
+                return null;
+            }
+        });
+        for( obj in object3ds.coalesced){
+            scene.add(obj);
+        }
+        Swarm swarm = ImageSwarm(img.width, object3ds);   
            
         camera.position.z = 70.0	;
        
@@ -61,11 +61,13 @@ shared void run() {
         directionalLight.position.set(1, 1, 1).normalize();
         scene.add(directionalLight);
        
-        variable Float rotationY = 0.01;
+        variable Float rotationY = 0.05;
+       
         void renderCallback() { 
+           swarm.nextPosition();  
            dynRequestAnimationFrame(renderCallback); 
            DynEuler euler = dynEuler(0.0,rotationY, 0.0, "XYZ");
-            for(o in scene.children){
+            for(o in object3ds.coalesced){
                 //o.rotation.x = o.rotation.x + 0.1;
                 //o.rotation.y = o.rotation.y + 0.1;
                 o.position.applyEuler(euler);

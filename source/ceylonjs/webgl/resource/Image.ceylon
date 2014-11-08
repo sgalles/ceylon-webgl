@@ -1,10 +1,13 @@
+import ceylonjs.webgl.three {
+    Color
+}
 
 
 
 shared class Image(String ppmAsciiData) {
     shared Integer width; 
     shared Integer height; 
-    shared [Integer*] pixels;
+    shared [Color*] pixels;
     
     /*Integer parseMandatoryInteger(String[] seq, Integer pos){
         assert(exists string = seq[pos]);
