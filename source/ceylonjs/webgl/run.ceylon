@@ -14,30 +14,30 @@ import ceylonjs.webgl.three {
 shared void run() {
         Image img = Image(trompon.raw);
      
-        DynScene scene = dynScene();
-        DynPerspectiveCamera camera;
-        DynWebGLRenderer renderer;
+        Scene scene = createScene();
+        PerspectiveCamera camera;
+        WebGLRenderer renderer;
    		dynamic{
-	        camera = dynPerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-	        renderer = dynWebGLRenderer();
+	        camera = createPerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+	        renderer = createWebGLRenderer();
 	        renderer.setSize( window.innerWidth, window.innerHeight );
 	        document.body.appendChild( renderer.domElement );
         }
         
-        DynBoxGeometry geometry = dynBoxGeometry(1, 1, 1);  
+        BoxGeometry geometry = createBoxGeometry(1, 1, 1);  
         for(i->color in img.pixels.indexed	){
             if(color != #ffffff){     
-                DynMeshLambertMaterial material = dynMeshLambertMaterial(DynMeshLambertMaterialParam(color)) ; 
-                DynMesh cube = dynMesh( geometry, material ); 
+                MeshLambertMaterial material = createMeshLambertMaterial(MeshLambertMaterialParam(color)) ; 
+                Mesh cube = createMesh( geometry, material ); 
                 //cube.position.x = ((i%img.width) - 30).float;
                 //cube.position.y = (-(i/(img.width))+30).float;
                 scene.add( cube );
             }
         }
-        [DynObject3D?*] object3ds = img.pixels.collect((Color color){
+        [Object3D?*] object3ds = img.pixels.collect((Color color){
             if(color != #ffffff){     
-                DynMeshLambertMaterial material = dynMeshLambertMaterial(DynMeshLambertMaterialParam(color)) ; 
-                return dynMesh( geometry, material ); 
+                MeshLambertMaterial material = createMeshLambertMaterial(MeshLambertMaterialParam(color)) ; 
+                return createMesh( geometry, material ); 
                 //cube.position.x = ((i%img.width) - 30).float;
                 //cube.position.y = (-(i/(img.width))+30).float;
                 //scene.add( cube );
@@ -53,11 +53,11 @@ shared void run() {
         camera.position.z = 70.0	;
        
         // add subtle ambient lighting
-        DynAmbientLight ambientLight = dynAmbientLight(#222222);
+        AmbientLight ambientLight = createAmbientLight(#222222);
         scene.add(ambientLight);
         
         // directional lighting
-        DynDirectionalLight directionalLight = dynDirectionalLight(#ffffff);
+        DirectionalLight directionalLight = createDirectionalLight(#ffffff);
         directionalLight.position.set(1, 1, 1).normalize();
         scene.add(directionalLight);
        
@@ -66,8 +66,8 @@ shared void run() {
         void renderCallback() { 
            //rotationY+=0.1;
            //;  
-           dynRequestAnimationFrame(renderCallback); 
-           DynEuler euler = dynEuler(0.0,rotationY, 0.0, "XYZ");
+           treeRequestAnimationFrame(renderCallback); 
+           Euler euler = createEuler(0.0,rotationY, 0.0, "XYZ");
             for(o in object3ds.coalesced){
                 //o.rotation.x = o.rotation.x + 0.1;
                 //o.rotation.y = o.rotation.y + 0.1;

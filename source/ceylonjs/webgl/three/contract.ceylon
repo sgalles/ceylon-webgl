@@ -1,74 +1,85 @@
 
+
 shared alias Color => Integer;
 
-shared dynamic DynWebGLRenderer {
+shared dynamic WebGLRenderer {
 	shared formal void setSize(Integer width, Integer height);
 	shared formal dynamic domElement;
-	shared formal void render(DynScene scene, DynCamera camera);
+	shared formal void render(Scene scene, Camera camera);
 }
 
-shared dynamic DynScene satisfies DynObject3D{
+shared dynamic Scene satisfies Object3D{
+    shared formal Boolean autoUpdate;
 }
 
-shared dynamic DynGeometry {
+shared dynamic Geometry {
 }
 
-shared dynamic DynBoxGeometry satisfies DynGeometry{
+shared dynamic BoxGeometry satisfies Geometry{
 }
 
-shared dynamic DynObject3D{
-	shared formal void add(DynObject3D o);
-	shared formal {DynObject3D*} children;
-	shared formal DynEuler rotation;
-	shared formal variable DynVector3 position;
+shared dynamic Object3D{
+	shared formal void add(Object3D o);
+	shared formal {Object3D*} children;
+	shared formal Euler rotation;
+	shared formal variable Vector3 position;
 }
 
-shared dynamic DynEuler{
+shared dynamic Euler{
 	shared variable formal Float x;
 	shared variable formal Float y;
 	shared variable formal Float z;
 }
 
-shared dynamic DynVector3{
+shared dynamic Vector3{
 	shared variable formal Float x;
 	shared variable formal Float y;
 	shared variable formal Float z;
-	shared formal DynVector3 set(Float|Integer x, Float|Integer y, Float|Integer z);
-	shared formal DynVector3 normalize();
-	shared formal DynVector3 applyEuler(DynEuler euler);
+	shared formal Vector3 set(Float|Integer x, Float|Integer y, Float|Integer z);
+	shared formal Vector3 normalize();
+	shared formal Vector3 applyEuler(Euler euler);
 }
 
-shared dynamic DynCamera satisfies DynObject3D{
+shared dynamic Camera satisfies Object3D{
 	
 }
 
-shared dynamic DynMesh satisfies DynObject3D{
+shared dynamic Mesh satisfies Object3D{
+	shared formal Material material;
+}
+
+shared dynamic PerspectiveCamera satisfies Camera{
+    shared formal void lookAt(Vector3 position);
 	
 }
 
-shared dynamic DynPerspectiveCamera satisfies DynCamera{
+shared dynamic Material {
 	
 }
 
-shared dynamic DynMaterial {
+shared dynamic MeshLambertMaterial satisfies Material{
 	
 }
 
-shared dynamic DynMeshLambertMaterial satisfies DynMaterial{
+shared dynamic MeshBasicMaterial satisfies Material{
+    
+}
+
+shared dynamic ShaderMaterial satisfies Material{
+    
+}
+
+shared class MeshLambertMaterialParam(shared Color? color = null){}
+
+shared dynamic Light satisfies Object3D{
 	
 }
 
-shared class DynMeshLambertMaterialParam(shared Color? color = null){}
-
-shared dynamic DynLight satisfies DynObject3D{
+shared dynamic AmbientLight satisfies Light{
 	
 }
 
-shared dynamic DynAmbientLight satisfies DynLight{
-	
-}
-
-shared dynamic DynDirectionalLight satisfies DynLight{
+shared dynamic DirectionalLight satisfies Light{
 	
 }
 
@@ -76,99 +87,141 @@ shared dynamic DynDirectionalLight satisfies DynLight{
 //	shared actual default Integer? color => #00ff00;
 //}
 
-shared DynScene dynScene(){
-	DynScene scene;
+shared Scene createScene(){
+	Scene scene;
 	dynamic {
-		window.\iScene = THREE.\iScene;
-		scene = Scene();
+		window.\iDynTreeScene = THREE.\iScene;
+		scene = DynTreeScene();
 	}
 	return scene;
 }
 
-shared DynEuler dynEuler(Float x,Float y, Float z, String order){
-    DynEuler o;
+shared Euler createEuler(Float x,Float y, Float z, String order){
+    Euler o;
     dynamic {
-        window.\iEuler = THREE.\iEuler;
-        o = Euler(x,y,z,order);
+        window.\iDynTreeEuler = THREE.\iEuler;
+        o = DynTreeEuler(x,y,z,order);
     }
     return o;
 }
 
-shared DynWebGLRenderer dynWebGLRenderer(){
-	DynWebGLRenderer o;
+shared class WebGlRendererParam(
+    shared Boolean? antialias = null, 
+    shared Boolean? alpha = null
+    ){}
+    
+    
+shared WebGLRenderer createWebGLRenderer(WebGlRendererParam param = WebGlRendererParam()){
+	WebGLRenderer o;
 	dynamic {
-		window.\iWebGLRenderer = THREE.\iWebGLRenderer;
-		o = WebGLRenderer();
+		window.\iDynTreeWebGLRenderer = THREE.\iWebGLRenderer;
+		o = DynTreeWebGLRenderer();
 	}
 	return o;
 }
 
 
 
-shared DynPerspectiveCamera dynPerspectiveCamera( Float|Integer fov, Float|Integer aspect, Float|Integer near, Float|Integer far){
-	DynPerspectiveCamera o;
+shared PerspectiveCamera createPerspectiveCamera( Float|Integer fov, Float|Integer aspect, Float|Integer near, Float|Integer far){
+	PerspectiveCamera o;
 	dynamic {
-		window.\iPerspectiveCamera = THREE.\iPerspectiveCamera;
-		o = PerspectiveCamera(fov,aspect,near,far);
+		window.\iDynTreePerspectiveCamera = THREE.\iPerspectiveCamera;
+		o = DynTreePerspectiveCamera(fov,aspect,near,far);
 	}
 	return o;
 }
 
-shared DynVector3 dynVector3( Float|Integer x, Float|Integer y, Float|Integer z){
-    DynVector3 o;
+shared Vector3 createVector3( Float|Integer x, Float|Integer y, Float|Integer z){
+    Vector3 o;
     dynamic {
-        window.\iVector3 = THREE.\iVector3;
-        o = Vector3(x,y,z);
+        window.\iDynTreeVector3 = THREE.\iVector3;
+        o = DynTreeVector3(x,y,z);
     }
     return o;
 }
 	
-shared DynBoxGeometry dynBoxGeometry(Float|Integer width,Float|Integer height,Float|Integer depth){
-	DynBoxGeometry o;
+shared BoxGeometry createBoxGeometry(Float|Integer width,Float|Integer height,Float|Integer depth){
+	BoxGeometry o;
 	dynamic {
-		window.\iBoxGeometry = THREE.\iBoxGeometry;
-		o = BoxGeometry(width,height,depth);
+		window.\iDynTreeBoxGeometry = THREE.\iBoxGeometry;
+		o = DynTreeBoxGeometry(width,height,depth);
 	}
 	return o;
 }
 
-shared DynMeshLambertMaterial dynMeshLambertMaterial(DynMeshLambertMaterialParam parameters){
-	DynMeshLambertMaterial o;
+shared MeshLambertMaterial createMeshLambertMaterial(MeshLambertMaterialParam parameters){
+	MeshLambertMaterial o;
 	dynamic {
-		window.\iMeshLambertMaterial = THREE.\iMeshLambertMaterial;
-		o = MeshLambertMaterial(parameters);
+		window.\iDynTreeMeshLambertMaterial = THREE.\iMeshLambertMaterial;
+		o = DynTreeMeshLambertMaterial(parameters);
 	}
 	return o;
 }
 
-shared DynMesh dynMesh(DynGeometry geometry, DynMaterial material){
-	DynMesh o;
+shared MeshBasicMaterial createMeshBasicMaterial(){
+    MeshBasicMaterial o;
+    dynamic {
+        window.\iDynMeshBasicMaterial = THREE.\iMeshBasicMaterial;
+        o = DynMeshBasicMaterial();
+    }
+    return o;
+}
+
+shared ShaderMaterial createShaderMaterial(dynamic param){
+    ShaderMaterial o;
+    dynamic {
+        window.\iDynShaderMaterial = THREE.\iShaderMaterial;
+        o = DynShaderMaterial(param);
+    }
+    return o;
+}
+
+shared Mesh createMesh(Geometry geometry, Material material){
+	Mesh o;
 	dynamic {
-		window.\iMesh = THREE.\iMesh;
-		o = Mesh(geometry, material);
+		window.\iDynTreeMesh = THREE.\iMesh;
+		o = DynTreeMesh(geometry, material);
 	}
 	return o;
 }
 
-shared DynAmbientLight dynAmbientLight(Integer color){
-	DynAmbientLight o;
+shared AmbientLight createAmbientLight(Integer color){
+	AmbientLight o;
 	dynamic {
-		window.\iAmbientLight = THREE.\iAmbientLight;
-		o = AmbientLight(color);
+		window.\iDynTreeAmbientLight = THREE.\iAmbientLight;
+		o = DynTreeAmbientLight(color);
 	}
 	return o;
 }
 
-shared DynDirectionalLight dynDirectionalLight(Integer color){
-	DynDirectionalLight o;
+shared DirectionalLight createDirectionalLight(Integer color){
+	DirectionalLight o;
 	dynamic {
-		window.\iDirectionalLight = THREE.\iDirectionalLight;
-		o = DirectionalLight(color);
+		window.\iDynTreeDirectionalLight = THREE.\iDirectionalLight;
+		o = DynTreeDirectionalLight(color);
 	}
 	return o;
 }
 
-shared void dynRequestAnimationFrame(void render()){
+shared Geometry createPlaneGeometry(Float width, Float height){
+    Geometry o;
+    dynamic {
+        window.\iDynPlaneGeometry = THREE.\iPlaneGeometry;
+        o = DynPlaneGeometry(width,height);
+    }
+    return o;
+}
+
+shared Geometry createSphereGeometry(Float radius){
+    Geometry o;
+    dynamic {
+        window.\iDynSphereGeometry = THREE.\iSphereGeometry;
+        o = DynSphereGeometry(radius);
+    }
+    return o;
+}
+
+shared void treeRequestAnimationFrame(void render()){
 	dynamic{
 		requestAnimationFrame(render);
 	}

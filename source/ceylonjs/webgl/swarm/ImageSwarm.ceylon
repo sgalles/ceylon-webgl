@@ -1,9 +1,9 @@
 import ceylonjs.webgl.three {
-    DynObject3D,
-    dynVector3,
-    DynVector3
+    Object3D,
+    createVector3,
+    Vector3
 }
-shared class ImageSwarm(Integer width, [DynObject3D?*] childrenInRectangle) extends AsbtractSwarm(childrenInRectangle.coalesced.sequence()){
+shared class ImageSwarm(Integer width, [Object3D?*] childrenInRectangle) extends AsbtractSwarm(childrenInRectangle.coalesced.sequence()){
    //  alias XY => Float[2]; 
           
     //XY[] xys = [for (i->obj in childrenInRectangle.indexed) 
@@ -27,11 +27,11 @@ shared class ImageSwarm(Integer width, [DynObject3D?*] childrenInRectangle) exte
           if(obj exists) [((i%width) - 30).float, (-(i/(width))+30).float]
           ];          
           
-          Anything() collectingCommand([DynObject3D, [Float,Float]] pair){
-              DynObject3D obj = pair[0];
+          Anything() collectingCommand([Object3D, [Float,Float]] pair){
+              Object3D obj = pair[0];
               Float x = pair[1][0];
               Float y = pair[1][1];
-              DynVector3 v = dynVector3(x, y, 0);
+              Vector3 v = createVector3(x, y, 0);
               void command(){
                   obj.position.x = v.x;
                  obj.position.y = v.y;
