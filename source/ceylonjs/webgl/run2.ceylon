@@ -10,8 +10,8 @@ import ceylonjs.webgl.three {
     Geometry,
     createMesh,
     treeRequestAnimationFrame,
-    Material,
     createSphereGeometry,
+    ShaderMaterialParam,
     createShaderMaterial
 }
 
@@ -70,38 +70,57 @@ Mesh buildCharacter(){
     //Material material = createMeshBasicMaterial() ;
     
     // pourquoi ?
-    Material? material;
-    dynamic {
-        dynamic param = dynamic[
-            uniforms= dynamic [
-                color= dynamic [type= "f"; \ivalue= 0.0;];
-            ];
-            
-            vertexShader="""varying vec2 vUv;
-                            void main() {
-                                vUv = uv;
-                                gl_Position = projectionMatrix *
-                                              modelViewMatrix * vec4(position, 1.0 );
-                            }
-                            """;
-            fragmentShader= """precision highp float;
-                                varying vec2 vUv;
-                                uniform float color;
-                                void main(void) {
-                                    gl_FragColor = vec4(vec3(color), 1.0);
-                                }
-                            """;
-        ];
-        print(param);
-        material = createShaderMaterial(param);
-       
-       
-    }
-    assert(exists material);
+    //Material? material;
+    //dynamic {
+    //    dynamic param = dynamic[
+    //        uniforms= dynamic [
+    //            color= dynamic [type= "f"; \ivalue= 0.0;];
+    //        ];
+    //        
+    //        vertexShader="""varying vec2 vUv;
+    //                        void main() {
+    //                            vUv = uv;
+    //                            gl_Position = projectionMatrix *
+    //                                          modelViewMatrix * vec4(position, 1.0 );
+    //                        }
+    //                        """;
+    //        fragmentShader= """precision highp float;
+    //                            varying vec2 vUv;
+    //                            uniform float color;
+    //                            void main(void) {
+    //                                gl_FragColor = vec4(vec3(color), 1.0);
+    //                            }
+    //                        """;
+    //    ];
+    //    print(param);
+    //    material = createShaderMaterial(param);
+    //}
+    //assert(exists material);
     
-   
-  
-    return createMesh(g, material);
+    ShaderMaterialParam param;
+     dynamic {
+        param = ShaderMaterialParam {
+                    uniforms = dynamic [
+                        color= dynamic [type= "f"; \ivalue= 0.0;];
+                    ];
+                    vertexShader = """varying vec2 vUv;
+                                      void main() {
+                                      vUv = uv;
+                                      gl_Position = projectionMatrix *
+                                              modelViewMatrix * vec4(position, 1.0 );
+                                      }
+                                   """;
+                    fragmentShader= """precision highp float;
+                                        varying vec2 vUv;
+                                        uniform float color;
+                                        void main(void) {
+                                            gl_FragColor = vec4(vec3(color), 1.0);
+                                        }
+                                    """;
+                };
+    }
+    
+    return createMesh(g, createShaderMaterial(param));
    
 }
 

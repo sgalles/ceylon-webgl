@@ -65,9 +65,7 @@ shared dynamic MeshBasicMaterial satisfies Material{
     
 }
 
-shared dynamic ShaderMaterial satisfies Material{
-    
-}
+
 
 shared class MeshLambertMaterialParam(shared Color? color = null){}
 
@@ -167,7 +165,23 @@ shared MeshBasicMaterial createMeshBasicMaterial(){
     return o;
 }
 
-shared ShaderMaterial createShaderMaterial(dynamic param){
+shared dynamic ShaderMaterialProperties satisfies Material{
+    shared formal dynamic uniforms;
+    shared formal String vertexShader;
+    shared formal String fragmentShader;
+}
+
+shared dynamic ShaderMaterial satisfies Material,ShaderMaterialProperties{
+    
+}
+
+shared class ShaderMaterialParam(
+    shared actual dynamic uniforms,
+    shared actual String vertexShader,
+    shared actual String fragmentShader
+) satisfies ShaderMaterialProperties{}
+
+shared ShaderMaterial createShaderMaterial(ShaderMaterialParam param){
     ShaderMaterial o;
     dynamic {
         window.\iDynShaderMaterial = THREE.\iShaderMaterial;
