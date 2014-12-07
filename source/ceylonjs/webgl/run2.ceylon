@@ -7,7 +7,7 @@ import ceylonjs.webgl.three {
     WebGLRenderer,
     WebGlRendererParam,
     Geometry,
-    treeRequestAnimationFrame,
+    threeRequestAnimationFrame,
     createSphereGeometry,
     ShaderMaterialParam,
     createPointCloud,
@@ -68,9 +68,9 @@ shared void run2() {
         // 
         // Render scene
         renderer.render( scene, camera );
-        treeRequestAnimationFrame( animate );
+        threeRequestAnimationFrame( animate );
     }
-    treeRequestAnimationFrame( animate );
+    threeRequestAnimationFrame( animate );
 }
 
 PointCloud buildCharacter(){

@@ -30,6 +30,7 @@ shared dynamic Object3D{
 }
 
 shared dynamic Color{
+    shared formal void offsetHSL(Float|Integer h, Float|Integer s, Float|Integer l);
     
 }
 
@@ -288,8 +289,17 @@ shared Geometry createSphereGeometry(Float|Integer radius, Integer widthSegments
     return o;
 }
 
-shared void treeRequestAnimationFrame(void render()){
+shared void threeRequestAnimationFrame(void render()){
 	dynamic{
 		requestAnimationFrame(render);
 	}
+}
+
+// TODO create a Three namespace
+shared object math{
+    shared Float clamp(Integer|Float x, Integer|Float a, Integer|Float b){
+        dynamic {
+            return THREE.\iMath.clamp(x,a,b);
+        }
+    }
 }

@@ -1,8 +1,11 @@
-import ceylonjs.webgl.three {
 
-    Geometry
+
+shared dynamic Texture{
+    shared formal variable dynamic wrapS;
+    shared formal variable dynamic wrapT;
 }
-shared dynamic loadTexture(String url) {
+
+shared Texture loadTexture(String url) {
     dynamic{
         return THREE.\iImageUtils.loadTexture(url);
     }

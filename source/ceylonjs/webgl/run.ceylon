@@ -66,7 +66,7 @@ shared void run() {
         void renderCallback() { 
            //rotationY+=0.1;
            //;  
-           treeRequestAnimationFrame(renderCallback); 
+           threeRequestAnimationFrame(renderCallback); 
            Euler euler = createEuler(0.0,rotationY, 0.0, "XYZ");
             for(o in object3ds.coalesced){
                 //o.rotation.x = o.rotation.x + 0.1;
