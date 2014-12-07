@@ -6,13 +6,16 @@ import ceylonjs.webgl.three {
     createWebGLRenderer,
     WebGLRenderer,
     WebGlRendererParam,
-    Mesh,
     Geometry,
-    createMesh,
     treeRequestAnimationFrame,
     createSphereGeometry,
     ShaderMaterialParam,
+    createPointCloud,
+    PointCloud,
     createShaderMaterial
+}
+import ceylonjs.webgl.three.imageutils {
+    loadTexture
 }
 
 
@@ -33,7 +36,7 @@ shared void run2() {
     
     PerspectiveCamera camera = createPerspectiveCamera( viewAngle, aspect, near, far );
     scene.add(camera);
-    camera.position.set(0,0,5);
+    camera.position.set(0,0,300);
     camera.lookAt(scene.position);
     
     // RENDERER
@@ -47,17 +50,22 @@ shared void run2() {
         container.appendChild( renderer.domElement );
     }
     // Main polygon
-    Mesh character = buildCharacter();
+    PointCloud character = buildCharacter();
     scene.add(character);
     
     void animate() {
+        Float c;
         dynamic{
             // Update uniform
-            dynamic c = 0.5+0.5*Math.cos(Date().getTime()/1000.0 * Math.\iPI);
-            dynamic sharedMaterial = character.material;
-            sharedMaterial.uniforms.color.\ivalue = c;
+            c = 0.5+0.5*Math.cos(Date().getTime()/1000.0 * Math.\iPI);
+            
         }
-       
+        //assert(is ShaderMaterial sharedMaterial = character.material);
+        dynamic{
+            //sharedMaterial.uniforms.color.\ivalue = c;
+        }
+      
+        // 
         // Render scene
         renderer.render( scene, camera );
         treeRequestAnimationFrame( animate );
@@ -65,62 +73,61 @@ shared void run2() {
     treeRequestAnimationFrame( animate );
 }
 
-Mesh buildCharacter(){
-    Geometry g = createSphereGeometry(1.0);
-    //Material material = createMeshBasicMaterial() ;
-    
-    // pourquoi ?
-    //Material? material;
-    //dynamic {
-    //    dynamic param = dynamic[
-    //        uniforms= dynamic [
-    //            color= dynamic [type= "f"; \ivalue= 0.0;];
-    //        ];
-    //        
-    //        vertexShader="""varying vec2 vUv;
-    //                        void main() {
-    //                            vUv = uv;
-    //                            gl_Position = projectionMatrix *
-    //                                          modelViewMatrix * vec4(position, 1.0 );
-    //                        }
-    //                        """;
-    //        fragmentShader= """precision highp float;
-    //                            varying vec2 vUv;
-    //                            uniform float color;
-    //                            void main(void) {
-    //                                gl_FragColor = vec4(vec3(color), 1.0);
-    //                            }
-    //                        """;
-    //    ];
-    //    print(param);
-    //    material = createShaderMaterial(param);
-    //}
-    //assert(exists material);
-    
+PointCloud buildCharacter(){
+    Geometry g = createSphereGeometry(100.0);
+  
+ 
     ShaderMaterialParam param;
      dynamic {
         param = ShaderMaterialParam {
+                    attributes = null;
+                    transparent = true;
                     uniforms = dynamic [
-                        color= dynamic [type= "f"; \ivalue= 0.0;];
+                        texture = dynamic [type= "t"; \ivalue=loadTexture("texture/disc.png");];
+                        //color= dynamic [type= "f"; \ivalue= 0.5;];
+                        
                     ];
-                    vertexShader = """varying vec2 vUv;
+                    vertexShader = """
+                                      //attribute float size;
+                                      //attribute vec3 ca;
+                                      
+                                      //varying vec3 vColor;
+                                      
                                       void main() {
-                                      vUv = uv;
-                                      gl_Position = projectionMatrix *
-                                              modelViewMatrix * vec4(position, 1.0 );
+                                      
+                                          //vColor = ca;
+                                          
+                                          vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+                                          
+                                          //gl_PointSize = size;
+                                          gl_PointSize = 40.0;
+                                          
+                                          gl_Position = projectionMatrix * mvPosition;
+                                          
                                       }
+
                                    """;
-                    fragmentShader= """precision highp float;
-                                        varying vec2 vUv;
-                                        uniform float color;
-                                        void main(void) {
-                                            gl_FragColor = vec4(vec3(color), 1.0);
-                                        }
+                    fragmentShader= """
+                                       //uniform vec3 color;
+                                       uniform sampler2D texture;
+                                       
+                                       //varying vec3 vColor;
+                                       
+                                       void main() {
+                                       
+                                           gl_FragColor = vec4( vec3(1.0), 1.0 );
+                                           gl_FragColor = gl_FragColor * texture2D( texture, gl_PointCoord );
+                                       
+                                       }
                                     """;
                 };
     }
+    dynamic{
+        param.uniforms.texture.\ivalue.wrapS = param.uniforms.texture.\ivalue.wrapT = THREE.\iRepeatWrapping;
+    }
     
-    return createMesh(g, createShaderMaterial(param));
+    
+    return createPointCloud(g, /*createPointCloudMaterial()*/createShaderMaterial(param));
    
 }
 

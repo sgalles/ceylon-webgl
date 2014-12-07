@@ -1,11 +1,12 @@
 
 
-shared alias Color => Integer;
+
 
 shared dynamic WebGLRenderer {
 	shared formal void setSize(Integer width, Integer height);
 	shared formal dynamic domElement;
 	shared formal void render(Scene scene, Camera camera);
+	shared formal void setClearColor(Integer color, Integer|Float alpha);
 }
 
 shared dynamic Scene satisfies Object3D{
@@ -13,6 +14,9 @@ shared dynamic Scene satisfies Object3D{
 }
 
 shared dynamic Geometry {
+    shared formal variable Boolean \idynamic;
+    shared formal Array<Vector3> vertices;
+    
 }
 
 shared dynamic BoxGeometry satisfies Geometry{
@@ -25,6 +29,10 @@ shared dynamic Object3D{
 	shared formal variable Vector3 position;
 }
 
+shared dynamic Color{
+    
+}
+
 shared dynamic Euler{
 	shared variable formal Float x;
 	shared variable formal Float y;
@@ -32,29 +40,41 @@ shared dynamic Euler{
 }
 
 shared dynamic Vector3{
-	shared variable formal Float x;
-	shared variable formal Float y;
-	shared variable formal Float z;
+	shared variable formal Float|Integer x;
+	shared variable formal Float|Integer y;
+	shared variable formal Float|Integer z;
 	shared formal Vector3 set(Float|Integer x, Float|Integer y, Float|Integer z);
 	shared formal Vector3 normalize();
 	shared formal Vector3 applyEuler(Euler euler);
 }
 
 shared dynamic Camera satisfies Object3D{
-	
+    shared formal variable Float aspect;
 }
 
 shared dynamic Mesh satisfies Object3D{
 	shared formal Material material;
+	shared formal Geometry geometry;
+	
+}
+
+shared dynamic PointCloud satisfies Object3D{
+    shared formal Material material;
 }
 
 shared dynamic PerspectiveCamera satisfies Camera{
     shared formal void lookAt(Vector3 position);
+    shared formal void updateProjectionMatrix();
+   
 	
 }
 
 shared dynamic Material {
-	
+	shared formal Boolean transparent;
+}
+
+shared dynamic PointCloudMaterial satisfies Material{
+    
 }
 
 shared dynamic MeshLambertMaterial satisfies Material{
@@ -67,7 +87,7 @@ shared dynamic MeshBasicMaterial satisfies Material{
 
 
 
-shared class MeshLambertMaterialParam(shared Color? color = null){}
+shared class MeshLambertMaterialParam(shared Integer? color = null){}
 
 shared dynamic Light satisfies Object3D{
 	
@@ -102,6 +122,16 @@ shared Euler createEuler(Float x,Float y, Float z, String order){
     }
     return o;
 }
+
+shared Color createColor(Integer color){
+    Color o;
+    dynamic {
+        window.\iDynColor = THREE.\iColor;
+        o = DynColor(color);
+    }
+    return o;
+}
+
 
 shared class WebGlRendererParam(
     shared Boolean? antialias = null, 
@@ -156,6 +186,15 @@ shared MeshLambertMaterial createMeshLambertMaterial(MeshLambertMaterialParam pa
 	return o;
 }
 
+shared PointCloudMaterial createPointCloudMaterial(){
+    PointCloudMaterial o;
+    dynamic {
+        window.\iDynPointCloudMaterial = THREE.\iPointCloudMaterial;
+        o = DynPointCloudMaterial();
+    }
+    return o;
+}
+
 shared MeshBasicMaterial createMeshBasicMaterial(){
     MeshBasicMaterial o;
     dynamic {
@@ -165,8 +204,9 @@ shared MeshBasicMaterial createMeshBasicMaterial(){
     return o;
 }
 
-shared dynamic ShaderMaterialProperties satisfies Material{
+shared dynamic ShaderMaterialProperties  satisfies Material{
     shared formal dynamic uniforms;
+    shared formal dynamic attributes;
     shared formal String vertexShader;
     shared formal String fragmentShader;
 }
@@ -177,8 +217,11 @@ shared dynamic ShaderMaterial satisfies Material,ShaderMaterialProperties{
 
 shared class ShaderMaterialParam(
     shared actual dynamic uniforms,
+    shared actual dynamic attributes,
     shared actual String vertexShader,
-    shared actual String fragmentShader
+    shared actual String fragmentShader,
+    shared actual Boolean transparent = false
+    
 ) satisfies ShaderMaterialProperties{}
 
 shared ShaderMaterial createShaderMaterial(ShaderMaterialParam param){
@@ -197,6 +240,15 @@ shared Mesh createMesh(Geometry geometry, Material material){
 		o = DynTreeMesh(geometry, material);
 	}
 	return o;
+}
+
+shared PointCloud createPointCloud(Geometry geometry, Material? material = null){
+    PointCloud o;
+    dynamic {
+        window.\iDynPointCloud = THREE.\iPointCloud;
+        o = DynPointCloud(geometry, material);
+    }
+    return o;
 }
 
 shared AmbientLight createAmbientLight(Integer color){
@@ -226,11 +278,12 @@ shared Geometry createPlaneGeometry(Float width, Float height){
     return o;
 }
 
-shared Geometry createSphereGeometry(Float radius){
+
+shared Geometry createSphereGeometry(Float|Integer radius, Integer widthSegments = 8, Integer heightSegments = 6){
     Geometry o;
     dynamic {
         window.\iDynSphereGeometry = THREE.\iSphereGeometry;
-        o = DynSphereGeometry(radius);
+        o = DynSphereGeometry(radius, widthSegments, heightSegments);
     }
     return o;
 }

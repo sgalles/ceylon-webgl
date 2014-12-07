@@ -34,7 +34,7 @@ shared void run() {
                 scene.add( cube );
             }
         }
-        [Object3D?*] object3ds = img.pixels.collect((Color color){
+        [Object3D?*] object3ds = img.pixels.collect((Integer color){
             if(color != #ffffff){     
                 MeshLambertMaterial material = createMeshLambertMaterial(MeshLambertMaterialParam(color)) ; 
                 return createMesh( geometry, material ); 
