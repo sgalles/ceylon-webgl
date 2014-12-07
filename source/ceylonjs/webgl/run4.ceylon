@@ -40,25 +40,17 @@ shared void run4() {
     Array<Float> noise = Array { for (i in 0:sphereGeometry.vertices.size) random() * 5 };
     
     ShaderMaterialParam sharedMaterialParam;
-    object attributes{
-        shared object displacement extends ShaderValue<Array<Float>>(
-            "f",  Array{ for (i in 0:sphereGeometry.vertices.size) 0.0 }
-        ){}
-    }
-    object uniforms{
-        shared object amplitude extends ShaderValue<Float>(
-            "f",  1.0
-        ){}
-        shared object color extends ShaderValue<Color>(
-            "c",  createColor(#ff2200)
-        ){}
-        shared object texture extends ShaderValue<Texture>(
-            "t",  loadTexture( "textures/water.jpg" )
-        ){}
-    }
-    
+    dynamic attributes;
+    dynamic uniforms;
     dynamic{
-       
+        attributes = dynamic [
+        displacement= dynamic [type= "f"; \ivalue = displacementValues;];
+        ];
+        uniforms = dynamic [
+        amplitude = dynamic [type= "f"; \ivalue = 1.0;];
+        color = dynamic [type= "c"; \ivalue = createColor(#ff2200);];
+        texture = dynamic [type= "t"; \ivalue = loadTexture( "textures/water.jpg" );];
+        ];
         
         uniforms.texture.\ivalue.wrapS = uniforms.texture.\ivalue.wrapT = THREE.\iRepeatWrapping;
         
@@ -70,6 +62,8 @@ shared void run4() {
         };
         
     }
+    
+    
     
     ShaderMaterial shaderMaterial = createShaderMaterial(sharedMaterialParam);
     
@@ -97,7 +91,7 @@ shared void run4() {
     void render(){
         value time = now();
         sphere.rotation.y = sphere.rotation.z = 0.01 * time;
-        
+        dynamic{
         uniforms.amplitude.\ivalue = 2.5 * sin( sphere.rotation.y * 0.125 );
         uniforms.color.\ivalue.offsetHSL( 0.0005, 0, 0 );
     
@@ -116,8 +110,9 @@ shared void run4() {
             
         }
         
-        attributes.displacement.needsUpdate = true; 
         
+        attributes.displacement.needsUpdate = true; 
+        }
         renderer.render( scene, camera );
         
     }
