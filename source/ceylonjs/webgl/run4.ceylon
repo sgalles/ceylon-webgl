@@ -12,15 +12,19 @@ import ceylonjs.webgl.three {
     createMesh,
     Mesh,
     createWebGLRenderer,
-    Color,
     math,
-    threeRequestAnimationFrame
+    threeRequestAnimationFrame,
+    Color
 }
 import ceylonjs.webgl.three.imageutils {
     loadTexture,
     Texture
 }
 shared void run4() {
+   //dynamic{
+   //    print(entriesToObject(Array{"a"->"b"}));
+   //}
+    
    
     Integer screenWidth = win.innerWidth;
     Integer screenHeight = win.innerHeight;
@@ -39,17 +43,26 @@ shared void run4() {
     Array<Float> displacementValues = Array{ for (i in 0:sphereGeometry.vertices.size) 0.0 };
     Array<Float> noise = Array { for (i in 0:sphereGeometry.vertices.size) random() * 5 };
     
+    object statAttributes extends ShaderValueBundle(){
+        shared ShaderValue<Array<Float>> displacement = ShaderValue("f",displacementValues);
+    }
+    object statUniforms extends ShaderValueBundle(){
+        shared ShaderValue<Float> amplitude = ShaderValue("f",1.0);
+        shared ShaderValue<Color> color = ShaderValue("c", createColor(#ff2200) );
+        shared ShaderValue<Texture> texture = ShaderValue("t", loadTexture( "textures/water.jpg" ) );
+    }
+    
     ShaderMaterialParam sharedMaterialParam;
     dynamic attributes;
     dynamic uniforms;
     dynamic{
         attributes = dynamic [
-        displacement= dynamic [type= "f"; \ivalue = displacementValues;];
+            displacement= statAttributes.displacement.dyn;
         ];
         uniforms = dynamic [
-        amplitude = dynamic [type= "f"; \ivalue = 1.0;];
-        color = dynamic [type= "c"; \ivalue = createColor(#ff2200);];
-        texture = dynamic [type= "t"; \ivalue = loadTexture( "textures/water.jpg" );];
+            amplitude = statUniforms.amplitude.dyn;
+            color = statUniforms.color.dyn;
+            texture = statUniforms.texture.dyn;
         ];
         
         uniforms.texture.\ivalue.wrapS = uniforms.texture.\ivalue.wrapT = THREE.\iRepeatWrapping;
@@ -111,7 +124,7 @@ shared void run4() {
         }
         
         
-        attributes.displacement.needsUpdate = true; 
+        statAttributes.displacement.needsUpdate = true; 
         }
         renderer.render( scene, camera );
         
@@ -219,8 +232,45 @@ object win{
     
 }
 
-abstract class ShaderValue<Type>(
-    shared String type, 
-    shared variable Type \ivalue,
-    shared variable Boolean needsUpdate = false
-){}
+//interface ShaderValueProvider<out Type>{
+//    shared formal String type;
+//    shared formal Type \ivalue;
+//}
+
+class ShaderValueBundle(){}
+
+class ShaderValue<Type> (
+    shared String type,  
+    Type _val
+){
+    shared dynamic dyn;
+    dynamic{
+        dyn = dynamic [type = type; \ivalue = _val;];
+    }
+    
+    shared Type val {
+        dynamic{
+            return dyn.\ivalue;
+        }    
+    }
+    assign val {
+        dynamic{
+            dyn.\ivalue = val;
+        }  
+    }
+    
+    shared Boolean needsUpdate {
+        dynamic{
+            return dyn.needsUpdate;
+        }    
+    }
+    assign needsUpdate {
+        dynamic{
+            dyn.needsUpdate = needsUpdate;
+        }  
+    }
+}
+
+//dynamic createDynShaderValue(String type, Anything val){
+//    
+//}
