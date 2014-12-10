@@ -1,3 +1,10 @@
+import ceylon.language.meta {
+    type
+}
+import ceylon.language.meta.declaration {
+    ValueDeclaration
+}
+
 import ceylonjs.webgl.three {
     PerspectiveCamera,
     createPerspectiveCamera,
@@ -43,33 +50,28 @@ shared void run4() {
     Array<Float> displacementValues = Array{ for (i in 0:sphereGeometry.vertices.size) 0.0 };
     Array<Float> noise = Array { for (i in 0:sphereGeometry.vertices.size) random() * 5 };
     
-    object statAttributes extends ShaderValueBundle(){
+    object attributes extends ShaderValueBundle(){
         shared ShaderValue<Array<Float>> displacement = ShaderValue("f",displacementValues);
     }
-    object statUniforms extends ShaderValueBundle(){
+    object uniforms extends ShaderValueBundle(){
         shared ShaderValue<Float> amplitude = ShaderValue("f",1.0);
         shared ShaderValue<Color> color = ShaderValue("c", createColor(#ff2200) );
         shared ShaderValue<Texture> texture = ShaderValue("t", loadTexture( "textures/water.jpg" ) );
+        
     }
     
+    
     ShaderMaterialParam sharedMaterialParam;
-    dynamic attributes;
-    dynamic uniforms;
+   
     dynamic{
-        attributes = dynamic [
-            displacement= statAttributes.displacement.dyn;
-        ];
-        uniforms = dynamic [
-            amplitude = statUniforms.amplitude.dyn;
-            color = statUniforms.color.dyn;
-            texture = statUniforms.texture.dyn;
-        ];
+        dynamic dynAttributes = attributes.createDyn();
+        dynamic dynUniforms = uniforms.createDyn();
         
-        uniforms.texture.\ivalue.wrapS = uniforms.texture.\ivalue.wrapT = THREE.\iRepeatWrapping;
+        dynUniforms.texture.\ivalue.wrapS = dynUniforms.texture.\ivalue.wrapT = THREE.\iRepeatWrapping;
         
         sharedMaterialParam = ShaderMaterialParam{
-            attributes = attributes;
-            uniforms = uniforms;
+            attributes = dynAttributes;
+            uniforms = dynUniforms;
             vertexShader = vertexshader;
             fragmentShader = fragmentshader;
         };
@@ -104,13 +106,13 @@ shared void run4() {
     void render(){
         value time = now();
         sphere.rotation.y = sphere.rotation.z = 0.01 * time;
-        dynamic{
-        uniforms.amplitude.\ivalue = 2.5 * sin( sphere.rotation.y * 0.125 );
-        uniforms.color.\ivalue.offsetHSL( 0.0005, 0, 0 );
+
+        uniforms.amplitude.val = 2.5 * sin( sphere.rotation.y * 0.125 );
+        uniforms.color.val.offsetHSL( 0.0005, 0, 0 );
     
         
         for(i in 0:displacementValues.size){
-            attributes.displacement.\ivalue.set(i, sin( 0.1 * i + time ));
+            attributes.displacement.val.set(i, sin( 0.1 * i + time ));
             
             // TODO use let
             assert(exists oldNoise = noise[ i ]);
@@ -118,14 +120,14 @@ shared void run4() {
             value newNoise = math.clamp(rawNoise, -5, 5);
             noise.set(i, newNoise);
             
-            assert(exists oldDispl = attributes.displacement.\ivalue[ i ]);
-            attributes.displacement.\ivalue.set(i, oldDispl + newNoise);
+            assert(exists oldDispl = attributes.displacement.val[ i ]);
+            attributes.displacement.val.set(i, oldDispl + newNoise);
             
         }
         
         
-        statAttributes.displacement.needsUpdate = true; 
-        }
+        attributes.displacement.needsUpdate = true; 
+   
         renderer.render( scene, camera );
         
     }
@@ -232,12 +234,27 @@ object win{
     
 }
 
-//interface ShaderValueProvider<out Type>{
-//    shared formal String type;
-//    shared formal Type \ivalue;
-//}
 
-class ShaderValueBundle(){}
+
+class ShaderValueBundle() {
+    
+    shared dynamic createDyn() {
+        value declaredMembers = type(this).declaration.declaredMemberDeclarations<ValueDeclaration>();
+        <String->Anything> func(ValueDeclaration property) {
+            dynamic{
+                dynamic propertyValue = property.memberGet(this);
+                return property.name->propertyValue.dyn;
+            }
+        }
+        value nameAndVals = declaredMembers.map(func);
+        print(nameAndVals);
+        dynamic {
+            return entriesToObject(Array(nameAndVals));
+        }
+    }
+}
+
+
 
 class ShaderValue<Type> (
     shared String type,  
@@ -269,6 +286,8 @@ class ShaderValue<Type> (
             dyn.needsUpdate = needsUpdate;
         }  
     }
+    
+    string => "[ShaderValue '``type``']";
 }
 
 //dynamic createDynShaderValue(String type, Anything val){

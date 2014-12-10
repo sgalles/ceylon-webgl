@@ -1,31 +1,37 @@
-import ceylonjs.webgl.three {
-    Scene
+import ceylon.language.meta {
+    type
 }
-shared void run3() {
+import ceylon.language.meta.declaration {
+    ValueDeclaration
+}
+shared class Foo(){
     
-    dynamic Tr{
-        shared formal class Scene(){
-            shared formal Boolean autoUpdate;
+   
+    
+    shared dynamic createDyn() {
+        value declaredMembers = type(this).declaration.declaredMemberDeclarations<ValueDeclaration>();
+        <String->Anything> func(ValueDeclaration val) {
+            print(val.memberGet(this));
+            return val.name->val.memberGet(this);
+        }
+        value nameAndVals = declaredMembers.map(func);
+        dynamic {
+            return entriesToObject(Array(nameAndVals));
         }
     }
-    
-    Tr tr;
+
+}
+
+shared object foo extends Foo(){
+    shared String bar = "a";
+    shared String bar2 = "b";
+}
+
+
+
+shared void run25(){
     dynamic{
-        tr = THREE;
-        print(tr);
+        print(foo.createDyn());
     }
-    Tr.Scene s = tr.Scene();
-    print(s.autoUpdate);
-    //Scene scene;
-    //dynamic {
-    //    window.\iDynTreeScene = THREE.\iScene;
-    //    scene = DynTreeScene();
-    //    
-    //}
-    //print(scene.autoUpdate);
     
-    //dynamic{
-    //    d = Date();
-    //    print(d);
-    //}
 }
