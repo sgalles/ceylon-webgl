@@ -28,10 +28,7 @@ import ceylonjs.webgl.three.imageutils {
     Texture
 }
 shared void run4() {
-   //dynamic{
-   //    print(entriesToObject(Array{"a"->"b"}));
-   //}
-    
+   
    
     Integer screenWidth = win.innerWidth;
     Integer screenHeight = win.innerHeight;
@@ -104,9 +101,9 @@ shared void run4() {
     win.addEventListener( "resize", onWindowResize);
     
     void render(){
-        value time = now();
+        value time = now() * 0.01;
         sphere.rotation.y = sphere.rotation.z = 0.01 * time;
-
+        
         uniforms.amplitude.val = 2.5 * sin( sphere.rotation.y * 0.125 );
         uniforms.color.val.offsetHSL( 0.0005, 0, 0 );
     
@@ -122,7 +119,6 @@ shared void run4() {
             
             assert(exists oldDispl = attributes.displacement.val[ i ]);
             attributes.displacement.val.set(i, oldDispl + newNoise);
-            
         }
         
         
@@ -247,7 +243,6 @@ class ShaderValueBundle() {
             }
         }
         value nameAndVals = declaredMembers.map(func);
-        print(nameAndVals);
         dynamic {
             return entriesToObject(Array(nameAndVals));
         }
