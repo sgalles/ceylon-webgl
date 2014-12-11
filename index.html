@@ -10,6 +10,7 @@
                 src="script/require/2.1.14/require.js">
         </script>
         <script src="script/threejs/three.min.js"></script>
+        <script src="script/libs/stats.min.js"></script>
         <script type="text/javascript">
             require.config({
                 // location of our project's compiled modules
@@ -22,12 +23,6 @@
                      three: '../script/threejs/three.min',
                      app: 'ceylonjs/webgl/1.0.0/ceylonjs.webgl-1.0.0'
                 },
-                 shim: {
-                    'three': { exports: 'THREE' },
-                    app: {
-                        deps: ['three']
-                    }
-                 },
             });
             //alias our module to 'app'
             

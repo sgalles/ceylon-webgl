@@ -29,6 +29,7 @@ import ceylonjs.webgl.three.imageutils {
 }
 shared void run4() {
    
+    
    
     Integer screenWidth = win.innerWidth;
     Integer screenHeight = win.innerHeight;
@@ -94,10 +95,17 @@ shared void run4() {
         renderer.setSize( w, h );
     }
     
+    dynamic stats;
     dynamic{
         dynamic container = document.body;
         container.appendChild( renderer.domElement );
+        
+        stats = Stats();
+        stats.domElement.style.position = "absolute";
+        stats.domElement.style.top = "0px";
+        container.appendChild( stats.domElement );
     }
+     
     win.addEventListener( "resize", onWindowResize);
     
     void render(){
@@ -108,18 +116,18 @@ shared void run4() {
         uniforms.color.val.offsetHSL( 0.0005, 0, 0 );
     
         
-        for(i in 0:displacementValues.size){
-            attributes.displacement.val.set(i, sin( 0.1 * i + time ));
-            
-            // TODO use let
-            assert(exists oldNoise = noise[ i ]);
-            value rawNoise = oldNoise + 0.5 * ( 0.5 - random() );
-            value newNoise = math.clamp(rawNoise, -5, 5);
-            noise.set(i, newNoise);
-            
-            assert(exists oldDispl = attributes.displacement.val[ i ]);
-            attributes.displacement.val.set(i, oldDispl + newNoise);
-        }
+        //for(i in 0:displacementValues.size){
+        //    attributes.displacement.val.set(i, sin( 0.1 * i + time ));
+        //    
+        //    // TODO use let
+        //    assert(exists oldNoise = noise[ i ]);
+        //    value rawNoise = oldNoise + 0.5 * ( 0.5 - random() );
+        //    value newNoise = math.clamp(rawNoise, -5, 5);
+        //    noise.set(i, newNoise);
+        //    
+        //    assert(exists oldDispl = attributes.displacement.val[ i ]);
+        //    attributes.displacement.val.set(i, oldDispl + newNoise);
+        //}
         
         
         attributes.displacement.needsUpdate = true; 
@@ -133,6 +141,10 @@ shared void run4() {
         threeRequestAnimationFrame( animate );
         
         render();
+        
+        dynamic{
+            stats.update();
+        }
         
     }
     
