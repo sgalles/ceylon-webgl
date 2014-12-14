@@ -45,12 +45,19 @@ shared void run4() {
     };
     sphereGeometry.\idynamic = true;
     
-    Array<Float> displacementValues = Array{ for (i in 0:sphereGeometry.vertices.size) 0.0 };
+    //Array<Float> displacementValues = Array{ for (i in 0:sphereGeometry.vertices.size) 0.0 };
     Array<Float> noise = Array { for (i in 0:sphereGeometry.vertices.size) random() * 5 };
     
-    object attributes extends ShaderValueBundle(){
+    /*object attributes extends ShaderValueBundle(){
         shared ShaderValue<Array<Float>> displacement = ShaderValue("f",displacementValues);
+    }*/
+    dynamic dynAttributes;
+    dynamic displacementValues;
+    dynamic{
+        displacementValues = createNativeArray(sphereGeometry.vertices.size, 0);
+        dynAttributes = dynamic [displacement=dynamic[type="f";\ivalue=displacementValues;];]; 
     }
+    
     object uniforms extends ShaderValueBundle(){
         shared ShaderValue<Float> amplitude = ShaderValue("f",1.0);
         shared ShaderValue<Color> color = ShaderValue("c", createColor(#ff2200) );
@@ -62,7 +69,7 @@ shared void run4() {
     ShaderMaterialParam sharedMaterialParam;
    
     dynamic{
-        dynamic dynAttributes = attributes.createDyn();
+        //dynamic dynAttributes = attributes.createDyn();
         dynamic dynUniforms = uniforms.createDyn();
         
         dynUniforms.texture.\ivalue.wrapS = dynUniforms.texture.\ivalue.wrapT = THREE.\iRepeatWrapping;
@@ -115,22 +122,14 @@ shared void run4() {
         uniforms.amplitude.val = 2.5 * sin( sphere.rotation.y * 0.125 );
         uniforms.color.val.offsetHSL( 0.0005, 0, 0 );
     
+        dynamic{
         
-        //for(i in 0:displacementValues.size){
-        //    attributes.displacement.val.set(i, sin( 0.1 * i + time ));
-        //    
-        //    // TODO use let
-        //    assert(exists oldNoise = noise[ i ]);
-        //    value rawNoise = oldNoise + 0.5 * ( 0.5 - random() );
-        //    value newNoise = math.clamp(rawNoise, -5, 5);
-        //    noise.set(i, newNoise);
-        //    
-        //    assert(exists oldDispl = attributes.displacement.val[ i ]);
-        //    attributes.displacement.val.set(i, oldDispl + newNoise);
-        //}
+            updateDisplacement(time, displacementValues, noise);
         
         
-        attributes.displacement.needsUpdate = true; 
+            dynAttributes.displacement.needsUpdate = true;
+        }
+         
    
         renderer.render( scene, camera );
         
