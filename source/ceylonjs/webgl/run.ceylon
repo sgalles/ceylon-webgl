@@ -6,25 +6,14 @@ import ceylon.language.meta.declaration {
 }
 
 import ceylonjs.webgl.three {
+    three,
     PerspectiveCamera,
-    createPerspectiveCamera,
-    createScene,
     Scene,
-    createColor,
-    ShaderMaterialParam,
-    createSphereGeometry,
     Geometry,
-    ShaderMaterial,
-    createShaderMaterial,
-    createMesh,
+    Color,
     Mesh,
-    createWebGLRenderer,
-    math,
-    threeRequestAnimationFrame,
-    Color
-}
-import ceylonjs.webgl.three.imageutils {
-    loadTexture,
+    ShaderMaterialParam,
+    ShaderMaterial,
     Texture
 }
 
@@ -79,6 +68,8 @@ String fragmentshader =
 
 
 
+
+
 shared void run() {
    
     NativeFuncs nativeFuncs;
@@ -88,12 +79,12 @@ shared void run() {
    
     Integer screenWidth = win.innerWidth;
     Integer screenHeight = win.innerHeight;
-    PerspectiveCamera camera =  createPerspectiveCamera( 30, screenWidth / screenHeight, 1, 10000 );
+    PerspectiveCamera camera =  three.perspectiveCamera( 30, screenWidth / screenHeight, 1, 10000 );
     camera.position.z = 300;
     
-    Scene scene = createScene();
+    Scene scene = three.scene();
     
-    Geometry sphereGeometry = createSphereGeometry{ 
+    Geometry sphereGeometry = three.sphereGeometry{ 
         radius = 50;
         widthSegments = 128;
         heightSegments = 64;
@@ -108,19 +99,17 @@ shared void run() {
     }
     object uniforms extends ShaderValueBundle(){
         shared ShaderValue<Float> amplitude = ShaderValue("f",1.0);
-        shared ShaderValue<Color> color = ShaderValue("c", createColor(#ff2200) );
-        shared ShaderValue<Texture> texture = ShaderValue("t", loadTexture( "textures/water.jpg" ) );
+        shared ShaderValue<Color> color = ShaderValue("c", three.color(#ff2200) );
+        shared ShaderValue<Texture> texture = ShaderValue("t", three.imageUtils.loadTexture( "textures/water.jpg" ) );
         
     }
     
     
     ShaderMaterialParam sharedMaterialParam;
-   
     dynamic{
 
         dynamic dynUniforms = uniforms.createDyn();
         dynamic dynAttributes = attributes.createDyn();
-        
         dynUniforms.texture.\ivalue.wrapS = dynUniforms.texture.\ivalue.wrapT = THREE.\iRepeatWrapping;
         
         sharedMaterialParam = ShaderMaterialParam{
@@ -131,15 +120,12 @@ shared void run() {
         };
         
     }
+    ShaderMaterial shaderMaterial = three.shaderMaterial(sharedMaterialParam);
     
-    
-    
-    ShaderMaterial shaderMaterial = createShaderMaterial(sharedMaterialParam);
-    
-    Mesh sphere = createMesh( sphereGeometry, shaderMaterial );
+    Mesh sphere = three.mesh( sphereGeometry, shaderMaterial );
     
     scene.add( sphere );
-    value renderer = createWebGLRenderer();
+    value renderer = three.webGLRenderer();
     renderer.setClearColor( #050505, 1 );
     renderer.setSize( screenWidth, screenHeight );
     
@@ -150,6 +136,9 @@ shared void run() {
         camera.updateProjectionMatrix();
         renderer.setSize( w, h );
     }
+    
+    win.addEventListener( "resize", onWindowResize);
+    
     
     dynamic stats;
     dynamic{
@@ -162,7 +151,7 @@ shared void run() {
         container.appendChild( stats.domElement );
     }
      
-    win.addEventListener( "resize", onWindowResize);
+   
     
     void render(){
         value time = now() * 0.01;
@@ -180,10 +169,8 @@ shared void run() {
     
     void animate() {
         
-        threeRequestAnimationFrame( animate );
-        
+        three.requestAnimationFrame( animate );
         render();
-        
         dynamic{
             stats.update();
         }
@@ -191,7 +178,6 @@ shared void run() {
     }
     
     animate();
-    print("done");
     
     
 }
