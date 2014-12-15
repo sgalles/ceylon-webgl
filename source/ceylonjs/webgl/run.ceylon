@@ -29,7 +29,10 @@ import ceylonjs.webgl.three.imageutils {
 }
 shared void run() {
    
-    
+    NativeFuncs nativeFuncs;
+    dynamic{
+        nativeFuncs = jsNativeFuncs;
+    }
    
     Integer screenWidth = win.innerWidth;
     Integer screenHeight = win.innerHeight;
@@ -45,19 +48,12 @@ shared void run() {
     };
     sphereGeometry.\idynamic = true;
     
-    //Array<Float> displacementValues = Array{ for (i in 0:sphereGeometry.vertices.size) 0.0 };
+  
     Array<Float> noise = Array { for (i in 0:sphereGeometry.vertices.size) random() * 5 };
-    
-    /*object attributes extends ShaderValueBundle(){
+    Array<Float> displacementValues = Array { for (i in 0:sphereGeometry.vertices.size) 0.0 };
+    object attributes extends ShaderValueBundle(){
         shared ShaderValue<Array<Float>> displacement = ShaderValue("f",displacementValues);
-    }*/
-    dynamic dynAttributes;
-    dynamic displacementValues;
-    dynamic{
-        displacementValues = createNativeArray(sphereGeometry.vertices.size, 0);
-        dynAttributes = dynamic [displacement=dynamic[type="f";\ivalue=displacementValues;];]; 
     }
-    
     object uniforms extends ShaderValueBundle(){
         shared ShaderValue<Float> amplitude = ShaderValue("f",1.0);
         shared ShaderValue<Color> color = ShaderValue("c", createColor(#ff2200) );
@@ -69,8 +65,9 @@ shared void run() {
     ShaderMaterialParam sharedMaterialParam;
    
     dynamic{
-        //dynamic dynAttributes = attributes.createDyn();
+
         dynamic dynUniforms = uniforms.createDyn();
+        dynamic dynAttributes = attributes.createDyn();
         
         dynUniforms.texture.\ivalue.wrapS = dynUniforms.texture.\ivalue.wrapT = THREE.\iRepeatWrapping;
         
@@ -122,13 +119,11 @@ shared void run() {
         uniforms.amplitude.val = 2.5 * sin( sphere.rotation.y * 0.125 );
         uniforms.color.val.offsetHSL( 0.0005, 0, 0 );
     
-        dynamic{
+       
+        nativeFuncs.updateDisplacement(time, displacementValues, noise);
+       
+        attributes.displacement.needsUpdate = true;
         
-            updateDisplacement(time, displacementValues, noise);
-        
-        
-            dynAttributes.displacement.needsUpdate = true;
-        }
          
    
         renderer.render( scene, camera );
@@ -255,7 +250,7 @@ class ShaderValueBundle() {
         }
         value nameAndVals = declaredMembers.map(func);
         dynamic {
-            return entriesToObject(Array(nameAndVals));
+            return jsNativeFuncs.entriesToObject(Array(nameAndVals));
         }
     }
 }
@@ -294,6 +289,12 @@ class ShaderValue<Type> (
     }
     
     string => "[ShaderValue '``type``']";
+}
+
+
+
+dynamic NativeFuncs{
+    shared formal void updateDisplacement(Float time, Array<Float> displacementValues, Array<Float> noise);
 }
 
 //dynamic createDynShaderValue(String type, Anything val){
