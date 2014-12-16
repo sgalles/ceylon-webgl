@@ -52,11 +52,12 @@ String fragmentshader =
                 gl_FragColor = gray * vec4( vec3( dProd ) * vec3( color ), 1.0 );
            }              
            """;
-
-
 shared void run() {
    
-    NativeFuncs nativeFuncs = ((){ dynamic{ return jsNativeFuncs; } })();
+    NativeFuncs nativeFuncs;
+    dynamic{
+        nativeFuncs = jsNativeFuncs;
+    }
    
     Integer screenWidth = win.innerWidth;
     Integer screenHeight = win.innerHeight;
@@ -73,7 +74,7 @@ shared void run() {
     sphereGeometry.\idynamic = true;
   
     value verticesIdx = 0:sphereGeometry.vertices.size;
-    Array<Float> noise = Array { for (i in verticesIdx) random() * 5 };
+    Array<Float> noise = Array { for (i in verticesIdx) math.random() * 5 };
     Array<Float> displacementValues = Array { for (i in verticesIdx) 0.0 };
     object attributes extends ShaderValueBundle(){
         shared ShaderValue<Array<Float>> displacement = ShaderValue("f",displacementValues);
@@ -129,10 +130,10 @@ shared void run() {
    
     
     void render(){
-        value time = now() * 0.01;
+        value time = date.now() * 0.01;
         sphere.rotation.y = sphere.rotation.z = 0.01 * time;
         
-        uniforms.amplitude.val = 2.5 * sin( sphere.rotation.y * 0.125 );
+        uniforms.amplitude.val = 2.5 * math.sin( sphere.rotation.y * 0.125 );
         uniforms.color.val.offsetHSL( 0.0005, 0, 0 );
       
         nativeFuncs.updateDisplacement(time, displacementValues, noise);
@@ -150,46 +151,6 @@ shared void run() {
         }
     }
     animate();  
-}
-
-
-Float random(){
-    dynamic{
-        return Math.random();
-    }
-}
-
-Integer now(){
-    dynamic{
-        return Date.now();
-    }
-}
-
-Float sin(Float a){
-    dynamic{
-        return Math.sin(a);
-    }
-}
-
-object win{
-    
-    shared Integer innerWidth{
-        dynamic {
-            return window.innerWidth;
-        }
-    }
-    shared Integer innerHeight{
-        dynamic {
-            return window.innerHeight;
-        }
-    }
-  
-   shared void addEventListener( String type, void listener(), Boolean useCapture = false){
-      dynamic{
-          window.addEventListener(type, listener, useCapture);
-      } 
-  }
-   
 }
 
 dynamic NativeFuncs{
