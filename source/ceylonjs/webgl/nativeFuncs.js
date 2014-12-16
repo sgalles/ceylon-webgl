@@ -1,4 +1,6 @@
 
+/* main render loop, more than 8000 values are updated for each frame */
+
 var jsNativeFuncs =  {
    
     updateDisplacement: function(time, displacementValues, noise){

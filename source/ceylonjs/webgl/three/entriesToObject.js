@@ -1,4 +1,4 @@
-
+/* create JS objects using ceylon Entry */
 function entriesToObject(entries) {
    var o = new Object();
    for(var i= 0; i < entries.length; i++){

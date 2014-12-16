@@ -12,6 +12,7 @@ import ceylonjs.webgl.three {
     ShaderValue
 }
 
+"GLSL Vertex Shader program"
 String vertexshader = 
         """ 
            uniform float amplitude;
@@ -31,6 +32,7 @@ String vertexshader =
            }                                                         
            """;
 
+"GLSL Fragment Shader program"
 String fragmentshader = 
         """               
            varying vec3 vNormal;
@@ -52,13 +54,9 @@ String fragmentshader =
                 gl_FragColor = gray * vec4( vec3( dProd ) * vec3( color ), 1.0 );
            }              
            """;
+"Main method"
 shared void run() {
-   
-    NativeFuncs nativeFuncs;
-    dynamic{
-        nativeFuncs = jsNativeFuncs;
-    }
-   
+    
     Integer screenWidth = win.innerWidth;
     Integer screenHeight = win.innerHeight;
     PerspectiveCamera camera =  three.perspectiveCamera( 30, screenWidth / screenHeight, 1, 10000 );
@@ -76,6 +74,7 @@ shared void run() {
     value verticesIdx = 0:sphereGeometry.vertices.size;
     Array<Float> noise = Array { for (i in verticesIdx) math.random() * 5 };
     Array<Float> displacementValues = Array { for (i in verticesIdx) 0.0 };
+    
     object attributes extends ShaderValueBundle(){
         shared ShaderValue<Array<Float>> displacement = ShaderValue("f",displacementValues);
     }
@@ -115,7 +114,7 @@ shared void run() {
     
     win.addEventListener( "resize", onWindowResize);
     
-    
+    "Displays the frame rate"
     dynamic stats;
     dynamic{
         dynamic container = document.body;
@@ -127,8 +126,13 @@ shared void run() {
         container.appendChild( stats.domElement );
     }
      
-   
+     "Typed reference on the native js function. Used for performance."
+     NativeFuncs nativeFuncs;
+     dynamic{
+         nativeFuncs = jsNativeFuncs; // declared in .js file
+     }
     
+    "Main render method. Called for each frame."
     void render(){
         value time = date.now() * 0.01;
         sphere.rotation.y = sphere.rotation.z = 0.01 * time;
@@ -136,13 +140,15 @@ shared void run() {
         uniforms.amplitude.val = 2.5 * math.sin( sphere.rotation.y * 0.125 );
         uniforms.color.val.offsetHSL( 0.0005, 0, 0 );
       
+        // this method is in pure JS for performance reasons
         nativeFuncs.updateDisplacement(time, displacementValues, noise);
+      
         attributes.displacement.needsUpdate = true;
    
         renderer.render( scene, camera );
-        
     }
     
+    "Launch animation"
     void animate() {
         three.requestAnimationFrame( animate );
         render();
@@ -153,7 +159,9 @@ shared void run() {
     animate();  
 }
 
+"For native JS methods"
 dynamic NativeFuncs{
+    "Update [[displacementValues]]"
     shared formal void updateDisplacement(Float time, Array<Float> displacementValues, Array<Float> noise);
 }
 
