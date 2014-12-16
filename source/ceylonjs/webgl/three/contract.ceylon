@@ -2,6 +2,10 @@
 
 shared object three{
 
+    shared object wrapping{
+        shared Wrapping repeat = ((){ dynamic { return THREE.\iRepeatWrapping; }})();
+    }
+    
 
     shared Scene scene(){
     	Scene scene;
@@ -178,6 +182,7 @@ shared object three{
         }
     }
     
+    
 
 }
 
@@ -308,6 +313,8 @@ shared class ShaderMaterialParam(
 ) satisfies ShaderMaterialProperties{}
 
 shared dynamic Texture{
-    shared formal variable dynamic wrapS;
-    shared formal variable dynamic wrapT;
+    shared formal variable Wrapping wrapS;
+    shared formal variable Wrapping wrapT;  
 }
+
+shared dynamic Wrapping{}

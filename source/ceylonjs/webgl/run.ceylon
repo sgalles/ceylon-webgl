@@ -13,8 +13,7 @@ import ceylonjs.webgl.three {
 }
 
 String vertexshader = 
-        """
-           
+        """ 
            uniform float amplitude;
            
            attribute float displacement;
@@ -29,15 +28,11 @@ String vertexshader =
            
                 vec3 newPosition = position + amplitude * normal * vec3( displacement );
                 gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
-           
-           }                        
-           
-                                            
+           }                                                         
            """;
 
 String fragmentshader = 
-        """
-                           
+        """               
            varying vec3 vNormal;
            varying vec2 vUv;
            
@@ -55,10 +50,7 @@ String fragmentshader =
                 vec4 gray = vec4( vec3( tcolor.r * 0.3 + tcolor.g * 0.59 + tcolor.b * 0.11 ), 1.0 );
            
                 gl_FragColor = gray * vec4( vec3( dProd ) * vec3( color ), 1.0 );
-           
-           }
-           
-                           
+           }              
            """;
 
 
@@ -92,22 +84,16 @@ shared void run() {
         shared ShaderValue<Texture> texture = ShaderValue("t", three.imageUtils.loadTexture( "textures/water.jpg" ) );
         
     }
-    
+    uniforms.texture.val.wrapS = uniforms.texture.val.wrapT = three.wrapping.repeat;
     
     ShaderMaterialParam sharedMaterialParam;
     dynamic{
-
-        dynamic dynUniforms = uniforms.createDyn();
-        dynamic dynAttributes = attributes.createDyn();
-        dynUniforms.texture.\ivalue.wrapS = dynUniforms.texture.\ivalue.wrapT = THREE.\iRepeatWrapping;
-        
         sharedMaterialParam = ShaderMaterialParam{
-            attributes = dynAttributes;
-            uniforms = dynUniforms;
+            attributes =  attributes.createDyn();
+            uniforms =  uniforms.createDyn();
             vertexShader = vertexshader;
             fragmentShader = fragmentshader;
-        };
-        
+        };  
     }
     ShaderMaterial shaderMaterial = three.shaderMaterial(sharedMaterialParam);
     
@@ -157,18 +143,13 @@ shared void run() {
     }
     
     void animate() {
-        
         three.requestAnimationFrame( animate );
         render();
         dynamic{
             stats.update();
         }
-        
     }
-    
-    animate();
-    
-    
+    animate();  
 }
 
 
