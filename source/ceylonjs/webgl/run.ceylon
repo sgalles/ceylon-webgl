@@ -1,10 +1,3 @@
-import ceylon.language.meta {
-    type
-}
-import ceylon.language.meta.declaration {
-    ValueDeclaration
-}
-
 import ceylonjs.webgl.three {
     three,
     PerspectiveCamera,
@@ -14,7 +7,9 @@ import ceylonjs.webgl.three {
     Mesh,
     ShaderMaterialParam,
     ShaderMaterial,
-    Texture
+    Texture,
+    ShaderValueBundle,
+    ShaderValue
 }
 
 String vertexshader = 
@@ -67,15 +62,9 @@ String fragmentshader =
            """;
 
 
-
-
-
 shared void run() {
    
-    NativeFuncs nativeFuncs;
-    dynamic{
-        nativeFuncs = jsNativeFuncs;
-    }
+    NativeFuncs nativeFuncs = ((){ dynamic{ return jsNativeFuncs; } })();
    
     Integer screenWidth = win.innerWidth;
     Integer screenHeight = win.innerHeight;
@@ -90,10 +79,10 @@ shared void run() {
         heightSegments = 64;
     };
     sphereGeometry.\idynamic = true;
-    
   
-    Array<Float> noise = Array { for (i in 0:sphereGeometry.vertices.size) random() * 5 };
-    Array<Float> displacementValues = Array { for (i in 0:sphereGeometry.vertices.size) 0.0 };
+    value verticesIdx = 0:sphereGeometry.vertices.size;
+    Array<Float> noise = Array { for (i in verticesIdx) random() * 5 };
+    Array<Float> displacementValues = Array { for (i in verticesIdx) 0.0 };
     object attributes extends ShaderValueBundle(){
         shared ShaderValue<Array<Float>> displacement = ShaderValue("f",displacementValues);
     }
@@ -217,71 +206,14 @@ object win{
    shared void addEventListener( String type, void listener(), Boolean useCapture = false){
       dynamic{
           window.addEventListener(type, listener, useCapture);
-      }
+      } 
   }
    
-    
 }
-
-
-
-class ShaderValueBundle() {
-    
-    shared dynamic createDyn() {
-        value declaredMembers = type(this).declaration.declaredMemberDeclarations<ValueDeclaration>();
-        <String->Anything> func(ValueDeclaration property) {
-            dynamic{
-                dynamic propertyValue = property.memberGet(this);
-                return property.name->propertyValue.dyn;
-            }
-        }
-        value nameAndVals = declaredMembers.map(func);
-        dynamic {
-            return jsNativeFuncs.entriesToObject(Array(nameAndVals));
-        }
-    }
-}
-
-
-
-class ShaderValue<Type> (
-    shared String type,  
-    Type _val
-){
-    shared dynamic dyn;
-    dynamic{
-        dyn = dynamic [type = type; \ivalue = _val;];
-    }
-    
-    shared Type val {
-        dynamic{
-            return dyn.\ivalue;
-        }    
-    }
-    assign val {
-        dynamic{
-            dyn.\ivalue = val;
-        }  
-    }
-    
-    shared Boolean needsUpdate {
-        dynamic{
-            return dyn.needsUpdate;
-        }    
-    }
-    assign needsUpdate {
-        dynamic{
-            dyn.needsUpdate = needsUpdate;
-        }  
-    }
-    
-    string => "[ShaderValue '``type``']";
-}
-
-
 
 dynamic NativeFuncs{
     shared formal void updateDisplacement(Float time, Array<Float> displacementValues, Array<Float> noise);
-    shared formal dynamic entriesToObject({<String->Anything>*} entries);
 }
+
+
 
