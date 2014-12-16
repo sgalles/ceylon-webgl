@@ -1,26 +1,18 @@
 body {
-  font-family: sans-serif;
-}
+    color: #ffffff;
+    font-family:Monospace;
+    font-size:13px;
+    text-align:center;
+    font-weight: bold;
 
-h1 {
-  color: blue;
+    background-color: #000000;
+    margin: 0px;
+    overflow: hidden;
 }
-
-body {
-  max-width: 800px;
-}
-
-#date-text {
-  padding: 10px;
-  background-color: lightblue;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-input {
-  padding: 8px;
-}
-
-#run-function-button {
-  margin-top: 15px;
+#info {
+    color: #fff;
+    position: absolute;
+    top: 0px; width: 100%;
+    padding: 5px;
+    z-index:100;
 }
