@@ -4,6 +4,11 @@ This is a [Ceylon](http://ceylon-lang.org/) port of the [three.js](http://threej
 
 The main code of the example was ported in Ceylon, but of course, the Ceylon example still depends on the original [three.js](https://github.com/mrdoob/three.js) library for the 3D, and the [stats.js](https://github.com/mrdoob/stats.js) library to display the FPS.
 
+ Can I see the result ?
+--------------------
+The precompiled Ceylon project is live here :
+[ceylon-webgl](http://stephane.galles.free.fr/ceylon/ceylon-webgl/)
+
 Why ?
 -----
 I'm in interested in Ceylon, I was experimenting with its JS interop features, and I was looking for an interesting small project to learn more.
@@ -41,10 +46,6 @@ Also, the metamodel of Ceylon allows interesting things (see what I've done with
 
 It demonstrates the excellent interop capabilties of Ceylon with JS, even for this rather unusual and extreme use case.
 
- Can I see the result ?
---------------------
-The precompiled project is live here :
-[ceylon-webgl](http://stephane.galles.free.fr/ceylon/ceylon-webgl/)
 
 Misc
 --------------------
