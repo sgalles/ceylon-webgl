@@ -50,5 +50,5 @@ It demonstrates the excellent interop capabilties of Ceylon with JS, even for th
 
 Misc
 --------------------
-* The code was compiled with a bleeding edge recompiled Ceylon > 1.1
+* The code was compiled with a bleeding edge recompiled Ceylon > 1.1.1
 * To display the HTML page locally on your computer, you way have to launch you browser with an option such as `--allow-file-access-from-files`for Chrome.
