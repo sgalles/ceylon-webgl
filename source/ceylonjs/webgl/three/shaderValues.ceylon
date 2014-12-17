@@ -9,7 +9,7 @@ import ceylon.language.meta {
 
 
 "Wrap a shader value to communicate with the GLSL program.
- A dynamic enumeration is exposed to Threejs for interop"
+ A dynamic enumeration is exposed to Threejs for interop."
 shared class ShaderValue<Type> (
     shared String type,  
     Type _val
@@ -47,7 +47,9 @@ shared class ShaderValue<Type> (
 
 "Collection of [[ShaderValue]]. The metamodel is used
  to exposed a dynamic enumeration with the name of 
- the attribute of the declared values"
+ the attribute of the declared values. The Ceylon attribute
+ names for [[ShaderValue]] must match the names of the 
+ attributes in the GLSL program"
 shared class ShaderValueBundle() {
     
     shared dynamic createDyn() {

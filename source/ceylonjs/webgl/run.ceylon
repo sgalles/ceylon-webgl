@@ -75,9 +75,11 @@ shared void run() {
     Array<Float> noise = Array { for (i in verticesIdx) math.random() * 5 };
     Array<Float> displacementValues = Array { for (i in verticesIdx) 0.0 };
     
+    "attributes to communicate with the GLSL programs"
     object attributes extends ShaderValueBundle(){
         shared ShaderValue<Array<Float>> displacement = ShaderValue("f",displacementValues);
     }
+    "uniforms to communicate with the GLSL programs"
     object uniforms extends ShaderValueBundle(){
         shared ShaderValue<Float> amplitude = ShaderValue("f",1.0);
         shared ShaderValue<Color> color = ShaderValue("c", three.color(#ff2200) );
@@ -114,7 +116,7 @@ shared void run() {
     
     win.addEventListener( "resize", onWindowResize);
     
-    "Displays the frame rate"
+    "Display the frame rate"
     dynamic stats;
     dynamic{
         dynamic container = document.body;
@@ -159,7 +161,7 @@ shared void run() {
     animate();  
 }
 
-"For native JS methods"
+"Interface for native JS methods"
 dynamic NativeFuncs{
     "Update [[displacementValues]]"
     shared formal void updateDisplacement(Float time, Array<Float> displacementValues, Array<Float> noise);

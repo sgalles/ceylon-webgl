@@ -1,4 +1,14 @@
 
+/*
+ The "pattern" used in this file :
+ 
+ window.DynFoo = THREE.\iFoo;
+ foo = DynFoo();
+ 
+is a temporary workaround for
+ https://github.com/ceylon/ceylon-js/issues/441
+ 
+ */
 
 shared object three{
 
