@@ -128,11 +128,7 @@ shared void run() {
         container.appendChild( stats.domElement );
     }
      
-     "Typed reference on the native js function. Used for performance."
-     NativeFuncs nativeFuncs;
-     dynamic{
-         nativeFuncs = jsNativeFuncs; // declared in .js file
-     }
+    
     
     "Main render method. Called for each frame."
     void render(){
@@ -167,5 +163,7 @@ dynamic NativeFuncs{
     shared formal void updateDisplacement(Float time, Array<Float> displacementValues, Array<Float> noise);
 }
 
+"Typed reference on the native js function. Used for performance."
+NativeFuncs nativeFuncs { dynamic { return jsNativeFuncs; } }
 
 
