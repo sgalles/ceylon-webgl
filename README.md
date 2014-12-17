@@ -41,4 +41,12 @@ Also, the metamodel of Ceylon allows interesting things (see what I've done with
 
 It demonstrates the excellent interop capabilties of Ceylon with JS, even for this rather unusual and extreme use case.
 
- 
+ Can I see the result ?
+--------------------
+The precompiled project is live here :
+[ceylon-webgl](http://stephane.galles.free.fr/ceylon/ceylon-webgl/)
+
+Misc
+--------------------
+* The code was compiled with a bleeding edge recompiled Ceylon > 1.1
+* To display the HTML page locally on your computer, you way have to launch you browser with an option sush as `--allow-file-access-from-files`for Chrome.
