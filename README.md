@@ -12,7 +12,7 @@ The precompiled Ceylon project is live here :
 
 Why ?
 -----
-I'm in interested in Ceylon, I was experimenting with its JS interop features, and I was looking for an interesting small project to learn more.
+I'm interested in Ceylon, I was experimenting with its JS interop features, and I was looking for an interesting small project to learn more.
 
 I heard about the three.js libs and was amazed by the online examples. And given that I'm an absolute beginner in 3D, it was also an oportunity to learn even more.
 
