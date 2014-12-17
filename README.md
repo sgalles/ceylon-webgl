@@ -24,7 +24,7 @@ Because I found the graphics beautifull, the code is rather small, and there are
 Is this really a valid use case for Ceylon ?
 ---------------------
 
-Frankly ? I don't know. I mean, this use case is a micro benchmark as sush, and probably not the main target for Ceylon.
+Frankly ? I don't know. I mean, this use case is a micro benchmark as such, and probably not the main target for Ceylon.
 
 And I happily admit that the Ceylon port is not on a par with the original JS example FPS-wise. I suspect it has something to do with the GC of the browser when to much Ceylon code is involved in the main render loop. But really I didn't investigate much.
 
@@ -51,4 +51,4 @@ It demonstrates the excellent interop capabilties of Ceylon with JS, even for th
 Misc
 --------------------
 * The code was compiled with a bleeding edge recompiled Ceylon > 1.1
-* To display the HTML page locally on your computer, you way have to launch you browser with an option sush as `--allow-file-access-from-files`for Chrome.
+* To display the HTML page locally on your computer, you way have to launch you browser with an option such as `--allow-file-access-from-files`for Chrome.
