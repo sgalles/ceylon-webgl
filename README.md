@@ -8,6 +8,7 @@ The main code of the example was ported in Ceylon, but of course, the Ceylon exa
 --------------------
 The precompiled Ceylon project is live here :
 [ceylon-webgl](http://stephane.galles.free.fr/ceylon/ceylon-webgl/)
+(works with *Chrome*, for instance)
 
 Why ?
 -----
