@@ -4,13 +4,13 @@ dynamic StaticMath{
     shared formal Float random();
 }
 
-StaticMath math = ((){ dynamic { return \iMath; } })();
+StaticMath math { dynamic { return \iMath; } }
 
 dynamic StaticDate{
     shared formal Integer now();
 }
 
-StaticDate date = ((){ dynamic { return \iDate; } })();
+StaticDate date { dynamic { return \iDate; } }
 
 dynamic StaticWindow{
     shared formal Integer innerWidth;
@@ -18,4 +18,4 @@ dynamic StaticWindow{
     shared formal void addEventListener( String type, void listener(), Boolean useCapture = false);
 }
 
-StaticWindow win = ((){ dynamic { return window; } })();
+StaticWindow win { dynamic { return window; } }
