@@ -1,6 +1,6 @@
 Ceylon three.js example  
 ==========
-This is a [Ceylon](http://ceylon-lang.org/) port of the [three.js](http://threejs.org) custom attributes [example](http://threejs.org/examples/webgl_custom_attributes.html).
+This is a [Ceylon](http://ceylon-lang.org/) port of the [three.js](http://threejs.org) *custom attributes [example](http://threejs.org/examples/webgl_custom_attributes.html)*.
 
 The main code of the example was ported in Ceylon, but of course, the Ceylon example still depends on the original [three.js](https://github.com/mrdoob/three.js) library for the 3D, and the [stats.js](https://github.com/mrdoob/stats.js) library to display the FPS.
 
@@ -20,7 +20,7 @@ Is this really a valid use case for Ceylon ?
 
 Frankly ? I don't know. I mean, this use case is a micro benchmark as sush, and probably not the main target for Ceylon.
 
-And I happily admit that the Ceylon port is not on a par with the original JS example FPS-wise. I suspect it has something to do with the GC of the browser when to much Ceylon code is involved in the main render loop (hey, this thing is a micro benchmark as sush ! )
+And I happily admit that the Ceylon port is not on a par with the original JS example FPS-wise. I suspect it has something to do with the GC of the browser when to much Ceylon code is involved in the main render loop. But really I didn't investigate much.
 
 That's why I decided to keep a bit of native JS for the core render loop that must update a large array of floats (8000 elements at each frame).
 
@@ -33,10 +33,12 @@ That being said
 Was it worthwile ?
 ---------------------
 
-For me, Yes. 
+Well, at least for me, Yes !
 
 The three.js API is beautiful, and it was a rewarding experience to combine it with the [dynamic interfaces of Ceylon](http://ceylon-lang.org/documentation/1.1/tour/dynamic/).
 
-Also, it demonstrates that the interop capabilties of Ceylon with JS even for this rather extreme use case.
+Also, the metamodel of Ceylon allows interesting things (see what I've done with the *ShaderValue* and *ShaderValueBundle* classes)
+
+It demonstrates the excellent interop capabilties of Ceylon with JS, even for this rather unusual and extreme use case.
 
  
