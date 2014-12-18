@@ -1,6 +1,6 @@
 Ceylon three.js example  
 ==========
-This is a [Ceylon](http://ceylon-lang.org/) port of the [three.js](http://threejs.org) *custom attributes [example](http://threejs.org/examples/webgl_custom_attributes.html)*.
+This is a [Ceylon](http://ceylon-lang.org/) port of the [three.js](http://threejs.org) *custom attributes [example](http://threejs.org/examples/#webgl_custom_attributes)*.
 
 The main code of the example was ported in Ceylon, but of course, the Ceylon example still depends on the original [three.js](https://github.com/mrdoob/three.js) library for the 3D, and the [stats.js](https://github.com/mrdoob/stats.js) library to display the FPS.
 
