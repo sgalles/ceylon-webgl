@@ -36,12 +36,12 @@ That being said
 * The raw performance of Ceylon itself is improving everyday
 
 Moreover, if you are not interested in raw-FPS, but want to build a complex application with a 3D display, I suspect that it could be a very valid use case
-because the static typing helps a lot).
+because the static typing helps a lot.
 
 Was it worthwhile ?
 ---------------------
 
-Well, at least for me, Yes !
+Yes !
 
 The three.js API is beautiful, and it was a rewarding experience to combine it with the [dynamic interfaces of Ceylon](http://ceylon-lang.org/documentation/1.1/tour/dynamic/).
 
