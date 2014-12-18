@@ -62,7 +62,7 @@ shared class ShaderValueBundle() {
         }
         value nameAndVals = declaredMembers.map(func);
         dynamic {
-            // use a native method because to dynamically
+            // use a native method to dynamically
             // create JS objects
             return entriesToObject(Array(nameAndVals));
         }

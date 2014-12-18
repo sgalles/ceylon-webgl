@@ -36,7 +36,7 @@ That being said
 * The raw performance of Ceylon itself is improving everyday
 
 
-Was it worthwile ?
+Was it worthwhile ?
 ---------------------
 
 Well, at least for me, Yes !
