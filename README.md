@@ -36,7 +36,9 @@ That being said
 * The raw performance of Ceylon itself is improving everyday
 
 Moreover, if you are not interested in raw-FPS, but want to build a complex application with a 3D display, I suspect that it could be a very valid use case
-because the static typing helps a lot.
+because the expressiveness of Ceylon helps a lot.
+
+...And maybe at some point I'll be able to replace the remaining JS code by Ceylon code.
 
 Was it worthwhile ?
 ---------------------
