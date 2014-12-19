@@ -26,7 +26,7 @@ Is this really a valid use case for Ceylon ?
 
 For now, I don't know. This use case is a micro benchmark as such, and probably not the main target for Ceylon.
 
-And I happily admit that the Ceylon port initially was not on a par with the original JS example FPS-wise. I suspect it has something to do with the GC of the browser when too much Ceylon code is involved in the main render loop. But really I didn't investigate much.
+And I happily admit that the Ceylon port initially was not on a par with the original JS example FPS-wise (on my rather low end laptop). I suspect it has something to do with the GC of the browser when too much Ceylon code is involved in the main render loop. But really I didn't investigate much.
 
 That's why I decided to keep a bit of native JS for the core render loop that must update a large array of floats (8000 elements at each frame).
 
