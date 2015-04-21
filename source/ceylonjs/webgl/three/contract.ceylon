@@ -1,14 +1,4 @@
 
-/*
- The "pattern" used in this file :
- 
- window.DynFoo = THREE.\iFoo;
- foo = DynFoo();
- 
-is a temporary workaround for
- https://github.com/ceylon/ceylon-js/issues/441
- 
- */
 
 shared object three{
 
@@ -16,166 +6,72 @@ shared object three{
         shared Wrapping repeat = ((){ dynamic { return THREE.\iRepeatWrapping; }})();
     }
     
-
     shared Scene scene(){
-    	Scene scene;
-    	dynamic {
-    		window.\iDynTreeScene = THREE.\iScene;
-    		scene = DynTreeScene();
-    	}
-    	return scene;
+    	dynamic { return THREE.Scene(); }
     }
     
     shared Euler euler(Float x,Float y, Float z, String order){
-        Euler o;
-        dynamic {
-            window.\iDynTreeEuler = THREE.\iEuler;
-            o = DynTreeEuler(x,y,z,order);
-        }
-        return o;
+        dynamic { return THREE.TreeEuler(x,y,z,order); }
     }
     
     shared Color color(Integer color){
-        Color o;
-        dynamic {
-            window.\iDynColor = THREE.\iColor;
-            o = DynColor(color);
-        }
-        return o;
+        dynamic { return THREE.Color(color); }
     }
-    
-    
-    
-        
         
     shared WebGLRenderer webGLRenderer(WebGlRendererParam param = WebGlRendererParam()){
-    	WebGLRenderer o;
-    	dynamic {
-    		window.\iDynTreeWebGLRenderer = THREE.\iWebGLRenderer;
-    		o = DynTreeWebGLRenderer();
-    	}
-    	return o;
+        dynamic { return THREE.WebGLRenderer(); }
     }
     
-    
-    
     shared PerspectiveCamera perspectiveCamera( Float|Integer fov, Float|Integer aspect, Float|Integer near, Float|Integer far){
-    	PerspectiveCamera o;
-    	dynamic {
-    		window.\iDynTreePerspectiveCamera = THREE.\iPerspectiveCamera;
-    		o = DynTreePerspectiveCamera(fov,aspect,near,far);
-    	}
-    	return o;
+        dynamic { return THREE.PerspectiveCamera(fov,aspect,near,far); }
     }
     
     shared Vector3 vector3( Float|Integer x, Float|Integer y, Float|Integer z){
-        Vector3 o;
-        dynamic {
-            window.\iDynTreeVector3 = THREE.\iVector3;
-            o = DynTreeVector3(x,y,z);
-        }
-        return o;
+        dynamic { return THREE.Vector3(x,y,z); }
     }
     	
     shared BoxGeometry boxGeometry(Float|Integer width,Float|Integer height,Float|Integer depth){
-    	BoxGeometry o;
-    	dynamic {
-    		window.\iDynTreeBoxGeometry = THREE.\iBoxGeometry;
-    		o = DynTreeBoxGeometry(width,height,depth);
-    	}
-    	return o;
+        dynamic { return THREE.BoxGeometry(width,height,depth); }
     }
     
     shared MeshLambertMaterial meshLambertMaterial(MeshLambertMaterialParam parameters){
-    	MeshLambertMaterial o;
-    	dynamic {
-    		window.\iDynTreeMeshLambertMaterial = THREE.\iMeshLambertMaterial;
-    		o = DynTreeMeshLambertMaterial(parameters);
-    	}
-    	return o;
+        dynamic { return THREE.MeshLambertMaterial(parameters); }
     }
     
     shared PointCloudMaterial pointCloudMaterial(){
-        PointCloudMaterial o;
-        dynamic {
-            window.\iDynPointCloudMaterial = THREE.\iPointCloudMaterial;
-            o = DynPointCloudMaterial();
-        }
-        return o;
+        dynamic { return THREE.PointCloudMaterial(); }
     }
     
     shared MeshBasicMaterial meshBasicMaterial(){
-        MeshBasicMaterial o;
-        dynamic {
-            window.\iDynMeshBasicMaterial = THREE.\iMeshBasicMaterial;
-            o = DynMeshBasicMaterial();
-        }
-        return o;
+        dynamic { return THREE.MeshBasicMaterial(); }
     }
     
-    
     shared ShaderMaterial shaderMaterial(ShaderMaterialParam param){
-        ShaderMaterial o;
-        dynamic {
-            window.\iDynShaderMaterial = THREE.\iShaderMaterial;
-            o = DynShaderMaterial(param);
-        }
-        return o;
+        dynamic { return THREE.ShaderMaterial(param); }
     }
     
     shared Mesh mesh(Geometry geometry, Material material){
-    	Mesh o;
-    	dynamic {
-    		window.\iDynTreeMesh = THREE.\iMesh;
-    		o = DynTreeMesh(geometry, material);
-    	}
-    	return o;
+        dynamic { return THREE.Mesh(geometry, material); }
     }
     
     shared PointCloud pointCloud(Geometry geometry, Material? material = null){
-        PointCloud o;
-        dynamic {
-            window.\iDynPointCloud = THREE.\iPointCloud;
-            o = DynPointCloud(geometry, material);
-        }
-        return o;
+        dynamic { return THREE.PointCloud(geometry, material); }
     }
     
     shared AmbientLight ambientLight(Integer color){
-    	AmbientLight o;
-    	dynamic {
-    		window.\iDynTreeAmbientLight = THREE.\iAmbientLight;
-    		o = DynTreeAmbientLight(color);
-    	}
-    	return o;
+        dynamic { return THREE.AmbientLight(color); }
     }
     
     shared DirectionalLight directionalLight(Integer color){
-    	DirectionalLight o;
-    	dynamic {
-    		window.\iDynTreeDirectionalLight = THREE.\iDirectionalLight;
-    		o = DynTreeDirectionalLight(color);
-    	}
-    	return o;
+        dynamic { return THREE.DirectionalLight(color); }
     }
     
     shared Geometry planeGeometry(Float width, Float height){
-        Geometry o;
-        dynamic {
-            window.\iDynPlaneGeometry = THREE.\iPlaneGeometry;
-            o = DynPlaneGeometry(width,height);
-        }
-        return o;
+        dynamic { return THREE.PlaneGeometry(width,height); }
     }
     
-    
     shared Geometry sphereGeometry(Float|Integer radius, Integer widthSegments = 8, Integer heightSegments = 6){
-        Geometry o;
-        dynamic {
-            window.\iDynSphereGeometry = THREE.\iSphereGeometry;
-            o = DynSphereGeometry(radius, widthSegments, heightSegments);
-        }
-        return o;
+        dynamic { return THREE.SphereGeometry(radius, widthSegments, heightSegments); }
     }
     
     shared void requestAnimationFrame(void render()){
@@ -279,8 +175,6 @@ shared dynamic MeshLambertMaterial satisfies Material{
 shared dynamic MeshBasicMaterial satisfies Material{
     
 }
-
-
 
 shared class MeshLambertMaterialParam(shared Integer? color = null){}
 
